@@ -33,6 +33,8 @@ header.top{margin-bottom:22px}
 h1{font-size:clamp(26px,4vw,36px);line-height:1.15;margin:8px 0 10px;letter-spacing:-.01em;font-weight:600}
 h2{font-size:19px;margin:0 0 12px;font-weight:600}
 h3{font-size:15px;margin:0 0 8px;font-weight:600}
+
+.author{font:500 15px var(--sans);color:var(--ink);margin:-4px 0 12px;letter-spacing:.01em}
 .lead{max-width:760px;color:var(--muted);margin:0;font-size:16px}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow)}
 .stack{display:flex;flex-direction:column;gap:16px}
@@ -102,6 +104,7 @@ kbd{font:12px var(--mono);background:var(--soft);border:1px solid var(--line);bo
 <header class="top">
   <div class="eyebrow"><span>Réseaux convolutifs · Diapo 58</span><a href="index.html">← Toutes les animations</a></div>
   <h1>Normalisation : de LRN à BatchNorm</h1>
+  <p class="author">Moulay Akhloufi</p>
   <p class="lead">Normaliser les activations garde leurs valeurs dans une plage raisonnable et rend l’apprentissage plus stable et plus rapide. AlexNet (2012) utilisait la <strong>normalisation locale de la réponse (LRN)</strong> entre canaux voisins ; depuis 2015, on utilise presque toujours la <strong>normalisation par lot (BatchNorm)</strong>.</p>
 </header>
 <div class="stack">
@@ -143,7 +146,7 @@ kbd{font:12px var(--mono);background:var(--soft);border:1px solid var(--line);bo
     </section>
   </div>
 </div>
-<footer><span>Deep Learning · Réseaux convolutifs – principes de base</span><a href="index.html">Toutes les animations →</a></footer>
+<footer><span>© 2026 Moulay Akhloufi · Deep Learning · Réseaux convolutifs – principes de base</span><a href="index.html">Toutes les animations →</a></footer>
 </div>
 <script>
 // ---- utilitaires communs ----

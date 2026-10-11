@@ -33,6 +33,8 @@ header.top{margin-bottom:22px}
 h1{font-size:clamp(26px,4vw,36px);line-height:1.15;margin:8px 0 10px;letter-spacing:-.01em;font-weight:600}
 h2{font-size:19px;margin:0 0 12px;font-weight:600}
 h3{font-size:15px;margin:0 0 8px;font-weight:600}
+
+.author{font:500 15px var(--sans);color:var(--ink);margin:-4px 0 12px;letter-spacing:.01em}
 .lead{max-width:760px;color:var(--muted);margin:0;font-size:16px}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow)}
 .stack{display:flex;flex-direction:column;gap:16px}
@@ -103,6 +105,7 @@ kbd{font:12px var(--mono);background:var(--soft);border:1px solid var(--line);bo
 <header class="top">
   <div class="eyebrow"><span>Réseaux convolutifs · Diapos 54–55</span><a href="index.html">← Toutes les animations</a></div>
   <h1>Fonction d’activation sur une carte d’activation</h1>
+  <p class="author">Moulay Akhloufi</p>
   <p class="lead">Après la convolution (et le biais), on applique une non-linéarité <strong>élément par élément</strong> : chaque valeur de la carte passe par la fonction f. Avec ReLU, f(z) = max(0, z) : les valeurs négatives deviennent 0 et les positives restent inchangées.</p>
 </header>
 <div class="stack">
@@ -130,7 +133,7 @@ kbd{font:12px var(--mono);background:var(--soft);border:1px solid var(--line);bo
     <div class="note warn">Le biais déplace toutes les valeurs de z : avec ReLU, il fixe donc le seuil à partir duquel le neurone s’active. Essayez le curseur de biais.</div>
   </section>
 </div>
-<footer><span>Deep Learning · Réseaux convolutifs – principes de base</span><a href="index.html">Toutes les animations →</a></footer>
+<footer><span>© 2026 Moulay Akhloufi · Deep Learning · Réseaux convolutifs – principes de base</span><a href="index.html">Toutes les animations →</a></footer>
 </div>
 <script>
 // ---- utilitaires communs ----

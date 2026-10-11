@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f4ee;--panel:#ffffff;--ink:#1c1b19;--muted:#6b675f;--line:#e2ddd2;--soft:#efebe2;
+  --accent:#0f6e66;--accent-ink:#ffffff;--accent-soft:#d8ecea;--hl:#e09a2d;--hl-soft:#fbe8c6;
+  --pos:#2a6fdb;--neg:#d2453b;--zero:#f4f2ec;--r:#d2453b;--g:#2f9e57;--b:#2a6fdb;
+  --shadow:0 1px 2px rgba(30,25,15,.06),0 4px 16px rgba(30,25,15,.05);
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#151513;--panel:#1e1d1a;--ink:#ece9e2;--muted:#a19b8f;--line:#35322c;--soft:#272520;
+  --accent:#4fb5aa;--accent-ink:#0d1f1d;--accent-soft:#1b3b38;--hl:#f0b456;--hl-soft:#41321a;
+  --pos:#6ea3ff;--neg:#ff7d72;--zero:#25231f;--r:#ff7d72;--g:#5cc97f;--b:#6ea3ff;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.25);}}
+:root[data-theme="dark"]{
+  --bg:#151513;--panel:#1e1d1a;--ink:#ece9e2;--muted:#a19b8f;--line:#35322c;--soft:#272520;
+  --accent:#4fb5aa;--accent-ink:#0d1f1d;--accent-soft:#1b3b38;--hl:#f0b456;--hl-soft:#41321a;
+  --pos:#6ea3ff;--neg:#ff7d72;--zero:#25231f;--r:#ff7d72;--g:#5cc97f;--b:#6ea3ff;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.25);}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 var(--sans);}
+.wrap{max-width:1180px;margin:0 auto;padding:28px 16px 48px}
+header.top{margin-bottom:22px}
+.eyebrow{font:500 12px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.eyebrow a{color:var(--muted);text-decoration:none}.eyebrow a:hover{color:var(--accent)}
+h1{font-size:clamp(26px,4vw,36px);line-height:1.15;margin:8px 0 10px;letter-spacing:-.01em;font-weight:600}
+h2{font-size:19px;margin:0 0 12px;font-weight:600}
+h3{font-size:15px;margin:0 0 8px;font-weight:600}
+.lead{max-width:760px;color:var(--muted);margin:0;font-size:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow)}
+.stack{display:flex;flex-direction:column;gap:16px}
+.row{display:flex;gap:16px;flex-wrap:wrap}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.mono{font-family:var(--mono)}
+.controls{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center}
+.ctl{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--muted);min-width:0}
+.ctl b{color:var(--ink);font:600 13px var(--mono)}
+.ctl .lab{display:flex;justify-content:space-between;gap:10px}
+select,input[type=number],input[type=text]{font:14px var(--sans);color:var(--ink);background:var(--soft);border:1px solid var(--line);border-radius:8px;padding:6px 8px;min-height:34px}
+input[type=number]{width:72px;font-family:var(--mono)}
+input[type=range]{accent-color:var(--accent);width:150px}
+.btn{font:500 14px var(--sans);color:var(--ink);background:var(--soft);border:1px solid var(--line);border-radius:9px;padding:7px 13px;cursor:pointer;min-height:36px;display:inline-flex;align-items:center;gap:6px;transition:background .15s,border-color .15s}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.on{background:var(--accent-soft);border-color:var(--accent);color:var(--ink)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.seg button{font:500 13px var(--sans);background:var(--soft);color:var(--ink);border:0;padding:7px 12px;cursor:pointer;min-height:34px}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button.on{background:var(--accent);color:var(--accent-ink)}
+.mat{display:inline-grid;gap:3px;font-family:var(--mono)}
+.cell{width:var(--cs,40px);height:var(--cs,40px);display:flex;align-items:center;justify-content:center;border-radius:6px;background:var(--zero);font-size:calc(var(--cs,40px)*.36);position:relative;border:1.5px solid transparent;transition:background .2s,border-color .15s,box-shadow .15s;color:var(--ink);user-select:none}
+.cell.pad{background:transparent;border:1.5px dashed var(--line);color:var(--muted)}
+.cell.win{border-color:var(--hl);box-shadow:0 0 0 2px var(--hl-soft)}
+.cell.cur{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.cell.dim{opacity:.35}
+.cell .w{position:absolute;right:3px;bottom:1px;font-size:calc(var(--cs,40px)*.24);color:var(--hl);font-weight:600}
+.cell input{width:100%;height:100%;border:0;background:transparent;text-align:center;font:inherit;color:inherit;padding:0}
+.cell input:focus{outline:2px solid var(--accent);border-radius:6px}
+.mlabel{font:600 12px var(--mono);color:var(--muted);margin-bottom:6px;letter-spacing:.03em}
+.formula{font-family:var(--mono);font-size:14px;background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:12px 14px;overflow-x:auto;line-height:1.8}
+.formula .t{display:inline-block;padding:0 5px;border-radius:5px;background:var(--panel);border:1px solid var(--line);margin:2px 1px}
+.formula .res{color:var(--accent);font-weight:600}
+.pill{display:inline-flex;align-items:center;gap:6px;font:600 12px var(--mono);padding:3px 9px;border-radius:999px;background:var(--accent-soft);color:var(--ink)}
+.pill.warn{background:var(--hl-soft)}
+.pill.bad{background:color-mix(in oklab,var(--neg) 22%,transparent)}
+.note{border-left:3px solid var(--accent);padding:8px 12px;background:var(--soft);border-radius:0 8px 8px 0;font-size:14px}
+.note.warn{border-color:var(--hl)}
+.note.bad{border-color:var(--neg)}
+.kpis{display:flex;gap:10px;flex-wrap:wrap}
+.kpi{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:130px}
+.kpi .v{font:600 22px var(--mono);color:var(--ink)}
+.kpi .k{font-size:12px;color:var(--muted)}
+.op{font:600 22px var(--mono);color:var(--muted);align-self:center;padding:0 4px}
+.scrollx{overflow-x:auto;max-width:100%}
+footer{margin-top:36px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:14px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer a{color:var(--accent)}
+svg text{font-family:var(--sans)}
+kbd{font:12px var(--mono);background:var(--soft);border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:1px 5px}
+@media (max-width:640px){.wrap{padding:20px 16px 40px}.card{padding:14px}input[type=range]{width:120px}}
+</style>
+<title>CNN – Pooling</title>
+<style>
+.stage{display:flex;flex-wrap:wrap;gap:18px 26px;align-items:center;justify-content:center;padding:6px 0}
+.cell.max{background:var(--hl)!important;color:#1c1b19;font-weight:600}
+.cell.win2{outline:2px dashed var(--accent);outline-offset:-3px}
+.cell.clickable{cursor:pointer}.cell.clickable:hover{border-color:var(--accent)}
+.outs{display:flex;flex-direction:column;gap:14px}
+.lg{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);margin-right:14px}
+.sw{width:14px;height:14px;border-radius:4px;display:inline-block}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <div class="eyebrow"><span>Réseaux convolutifs · Diapos 113–122</span><a href="index.html">← Toutes les animations</a></div>
+  <h1>Pooling : max, moyenne et convolution à pas 2</h1>
+  <p class="lead">Le pooling réduit la taille de chaque carte d’activation, <strong>indépendamment</strong> pour chaque carte. Une fenêtre F×F se déplace avec un pas S ; on garde le maximum (max pooling) ou la moyenne (average pooling). Le pooling n’a <strong>aucun paramètre à apprendre</strong>.</p>
+</header>
+<div class="stack">
+  <section class="card stack">
+    <h2>1. Max pooling et average pooling</h2>
+    <div class="controls" id="optsA"></div>
+    <div id="statusA"></div>
+    <div id="barA"></div>
+    <div class="stage" id="stageA"></div>
+    <div class="formula" id="calcA"></div>
+  </section>
+
+  <section class="card stack">
+    <h2>2. Réduire la taille : pooling 2×2 ou convolution à pas 2 ?</h2>
+    <p class="muted" style="margin:0">Les deux opérations divisent la taille par 2 (8×8 → 4×4). Le pooling applique une règle fixe ; la convolution à pas 2 applique des <strong>poids appris</strong>. Plusieurs architectures récentes (ex. ResNet, réseaux « all-convolutional ») remplacent ainsi le pooling par des convolutions à pas 2.</p>
+    <div class="controls" id="optsB"></div>
+    <div id="barB"></div>
+    <div><span class="lg"><span class="sw" style="border:2px solid var(--hl)"></span>fenêtre du max pooling 2×2, S = 2</span><span class="lg"><span class="sw" style="border:2px dashed var(--accent)"></span>fenêtre de la convolution 3×3, S = 2, P = 1</span></div>
+    <div class="stage" id="stageB"></div>
+    <div class="formula" id="calcB"></div>
+    <div class="kpis" id="kpiB"></div>
+  </section>
+
+  <section class="card stack">
+    <h2>À retenir</h2>
+    <div class="note">Taille de sortie : <span class="mono">(N − F) / S + 1</span>. Paramètres habituels : F = 2, S = 2 (divise la taille par 2) ou F = 3, S = 2 (fenêtres qui se chevauchent).</div>
+    <div class="note">La profondeur ne change pas : un volume 224×224×64 devient 112×112×64 après un pooling 2×2, S = 2.</div>
+    <div class="note warn">Le max pooling rend la représentation un peu plus robuste aux petites translations : si le maximum se déplace d’un pixel à l’intérieur de la fenêtre, la sortie ne change pas.</div>
+  </section>
+</div>
+<footer><span>Deep Learning · Réseaux convolutifs – principes de base</span><a href="index.html">Toutes les animations →</a></footer>
+</div>
+<script>
+// ---- utilitaires communs ----
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+function h(tag, attrs = {}, ...kids) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs || {})) {
+    if (k === 'class') e.className = v;
+    else if (k === 'style' && v && typeof v === 'object') { for (const [sk, sv] of Object.entries(v)) { if (sv == null) continue; sk.startsWith('--') ? e.style.setProperty(sk, sv) : (e.style[sk] = sv); } }
+    else if (k.startsWith('on')) e.addEventListener(k.slice(2), v);
+    else if (k === 'html') e.innerHTML = v;
+    else if (v !== false && v != null) e.setAttribute(k, v);
+  }
+  for (const c of kids.flat()) if (c != null) e.append(c.nodeType ? c : document.createTextNode(c));
+  return e;
+}
+// nombres au format français (virgule décimale, signe moins typographique)
+function fmt(x, d = 2) {
+  if (!isFinite(x)) return '—';
+  let s = (Math.round(x * 10 ** d) / 10 ** d).toString();
+  if (Object.is(Math.round(x * 10 ** d), -0) || s === '-0') s = '0';
+  return s.replace('.', ',').replace('-', '−');
+}
+function fmtInt(n) { return Math.round(n).toLocaleString('fr-CA').replace(/ | /g, ' '); }
+function par(x) { return x < 0 ? '(' + fmt(x) + ')' : fmt(x); }
+const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
+// couleur divergente (négatif → rouge, positif → bleu)
+function divColor(v, m) {
+  if (!m) return 'var(--zero)';
+  const t = clamp(Math.abs(v) / m, 0, 1);
+  return `color-mix(in oklab, ${v < 0 ? 'var(--neg)' : 'var(--pos)'} ${Math.round(t * 70)}%, var(--zero))`;
+}
+function seqColor(v, m, c = 'var(--accent)', top = 75) {
+  const t = m ? clamp(v / m, 0, 1) : 0;
+  return `color-mix(in oklab, ${c} ${Math.round(t * top)}%, var(--zero))`;
+}
+// générateur pseudo-aléatoire reproductible
+function rng(seed = 1) { let s = seed >>> 0; return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296); }
+// lecteur pas à pas (lecture / pause / vitesse)
+class Player {
+  constructor({ n, onStep, speed = 900 }) { this.n = n; this.i = 0; this.onStep = onStep; this.speed = speed; this.t = null; }
+  go(i) { this.i = ((i % this.n) + this.n) % this.n; this.onStep(this.i); }
+  next() { this.go(this.i + 1); } prev() { this.go(this.i - 1); }
+  play() { this.stop(); this.t = setInterval(() => this.next(), this.speed); this.playing = true; }
+  stop() { clearInterval(this.t); this.t = null; this.playing = false; }
+  toggle() { this.playing ? this.stop() : this.play(); return this.playing; }
+  setSpeed(ms) { this.speed = ms; if (this.playing) this.play(); }
+}
+// barre de contrôle standard pour un Player
+function playerBar(p, { extra = [] } = {}) {
+  const play = h('button', { class: 'btn primary', onclick: () => { play.textContent = p.toggle() ? '❚❚ Pause' : '▶ Lecture'; } }, '▶ Lecture');
+  const sp = h('input', { type: 'range', min: 150, max: 2000, step: 50, value: 2150 - p.speed, oninput: e => p.setSpeed(2150 - +e.target.value), 'aria-label': 'Vitesse' });
+  const bar = h('div', { class: 'controls' },
+    h('button', { class: 'btn', onclick: () => { p.stop(); play.textContent = '▶ Lecture'; p.prev(); } }, '◀ Précédent'),
+    play,
+    h('button', { class: 'btn', onclick: () => { p.stop(); play.textContent = '▶ Lecture'; p.next(); } }, 'Suivant ▶'),
+    h('label', { class: 'ctl' }, h('span', {}, 'Vitesse'), sp), ...extra);
+  bar.stopUI = () => { p.stop(); play.textContent = '▶ Lecture'; };
+  return bar;
+}
+// contrôle curseur avec étiquette et valeur
+function slider({ label, min, max, step = 1, value, onInput, fmtv = v => v, width }) {
+  const out = h('b', {}, fmtv(value));
+  const inp = h('input', { type: 'range', min, max, step, value, style: width ? { width } : null });
+  inp.addEventListener('input', () => { out.textContent = fmtv(+inp.value); onInput(+inp.value); });
+  const w = h('label', { class: 'ctl' }, h('span', { class: 'lab' }, h('span', {}, label), out), inp);
+  w.input = inp; w.set = v => { inp.value = v; out.textContent = fmtv(+v); };
+  return w;
+}
+function segmented(options, value, onChange) {
+  const s = h('div', { class: 'seg', role: 'group' });
+  const btns = options.map(([v, l]) => h('button', { class: v === value ? 'on' : '', onclick: () => { btns.forEach(b => b.classList.remove('on')); b2[v].classList.add('on'); onChange(v); } }, l));
+  const b2 = {}; options.forEach(([v], i) => b2[v] = btns[i]);
+  s.append(...btns); s.set = v => { btns.forEach(b => b.classList.remove('on')); b2[v] && b2[v].classList.add('on'); };
+  return s;
+}
+// matrice de cellules ; retourne {el, cells[r][c]}
+function matrix(rows, cols, { cs = 40, gap = 3, cls = '' } = {}) {
+  const el = h('div', { class: 'mat ' + cls, style: { gridTemplateColumns: `repeat(${cols}, var(--cs))`, '--cs': cs + 'px', gap: gap + 'px' } });
+  const cells = [];
+  for (let r = 0; r < rows; r++) { cells.push([]); for (let c = 0; c < cols; c++) { const d = h('div', { class: 'cell' }); el.append(d); cells[r].push(d); } }
+  return { el, cells };
+}
+
+// ---------- Partie 1
+const SLIDE = [[1,1,2,4],[5,6,7,8],[3,2,1,0],[1,2,3,4]];
+let A = { N: 4, F: 2, S: 2 }, XA = SLIDE.map(r => r.slice()), MA = 2, validA = true;
+const randGrid = (n, R = rng(Date.now())) => Array.from({ length: n }, () => Array.from({ length: n }, () => Math.floor(R() * 10)));
+const sN = slider({ label: 'Taille N', min: 4, max: 8, value: 4, onInput: v => { A.N = v; XA = randGrid(v); buildA(); } });
+const sF = slider({ label: 'Fenêtre F', min: 2, max: 3, value: 2, onInput: v => { A.F = v; buildA(); } });
+const sS = slider({ label: 'Pas S', min: 1, max: 3, value: 2, onInput: v => { A.S = v; buildA(); } });
+$('#optsA').append(sN, sF, sS,
+  h('button', { class: 'btn', onclick: () => { XA = randGrid(A.N); buildA(); } }, '🎲 Valeurs aléatoires'),
+  h('button', { class: 'btn', onclick: () => { A = { N: 4, F: 2, S: 2 }; sN.set(4); sF.set(2); sS.set(2); XA = SLIDE.map(r => r.slice()); buildA(); } }, 'Exemple des diapos'));
+const pA = new Player({ n: 4, onStep: renderA, speed: 1100 }); const barA = playerBar(pA); $('#barA').append(barA);
+let inA, mxA, avA;
+const win = (X, i, j, F, S) => { const v = []; for (let a = 0; a < F; a++) for (let b = 0; b < F; b++) v.push(X[i * S + a][j * S + b]); return v; };
+function buildA() {
+  validA = A.N >= A.F && (A.N - A.F) % A.S === 0;
+  MA = validA ? (A.N - A.F) / A.S + 1 : 0;
+  $('#statusA').innerHTML = validA ? `<span class="pill">Sortie : (${A.N} − ${A.F}) / ${A.S} + 1 = ${MA} → ${MA}×${MA}</span>`
+    : `<div class="note bad">(${A.N} − ${A.F}) / ${A.S} + 1 = ${fmt((A.N - A.F) / A.S + 1)} : la fenêtre ne couvre pas exactement l’entrée. Keras (padding="valid") ignorerait simplement la dernière colonne et la dernière rangée.</div>`;
+  barA.style.display = validA ? '' : 'none';
+  const st = $('#stageA'); st.innerHTML = ''; $('#calcA').innerHTML = '';
+  const cs = A.N > 6 ? 36 : 44;
+  const m = matrix(A.N, A.N, { cs }); inA = m.cells;
+  inA.forEach((r, i) => r.forEach((d, j) => { d.textContent = XA[i][j]; d.style.background = seqColor(XA[i][j], 9, 'var(--muted)', 40); }));
+  st.append(h('div', {}, h('div', { class: 'mlabel' }, `ENTRÉE ${A.N}×${A.N}`), m.el));
+  if (!validA) return;
+  const a = matrix(MA, MA, { cs }), b = matrix(MA, MA, { cs }); mxA = a.cells; avA = b.cells;
+  [mxA, avA].forEach(C => C.forEach((r, i) => r.forEach((d, j) => { d.classList.add('clickable'); d.onclick = () => { barA.stopUI(); pA.go(i * MA + j); }; })));
+  st.append(h('div', { class: 'op' }, '→'), h('div', { class: 'outs' },
+    h('div', {}, h('div', { class: 'mlabel' }, `MAX POOLING ${MA}×${MA}`), a.el),
+    h('div', {}, h('div', { class: 'mlabel' }, `AVERAGE POOLING ${MA}×${MA}`), b.el)));
+  pA.n = MA * MA; pA.i = Math.min(pA.i, pA.n - 1); renderA(pA.i);
+}
+function renderA(step) {
+  if (!validA) return;
+  const i = Math.floor(step / MA), j = step % MA, v = win(XA, i, j, A.F, A.S), mx = Math.max(...v);
+  let maxMarked = false;
+  inA.forEach((r, a) => r.forEach((d, b) => {
+    const inW = a >= i * A.S && a < i * A.S + A.F && b >= j * A.S && b < j * A.S + A.F;
+    d.classList.toggle('win', inW);
+    const isMax = inW && !maxMarked && XA[a][b] === mx; if (isMax) maxMarked = true;
+    d.classList.toggle('max', isMax);
+  }));
+  for (let a = 0; a < MA; a++) for (let b = 0; b < MA; b++) {
+    const k = a * MA + b, done = k <= step, w = win(XA, a, b, A.F, A.S);
+    const m = Math.max(...w), av = w.reduce((s, x) => s + x, 0) / w.length;
+    mxA[a][b].textContent = done ? m : '·'; avA[a][b].textContent = done ? fmt(av) : '·';
+    mxA[a][b].style.background = done ? seqColor(m, 9, 'var(--hl)', 70) : 'var(--zero)';
+    avA[a][b].style.background = done ? seqColor(av, 9, 'var(--accent)', 60) : 'var(--zero)';
+    mxA[a][b].classList.toggle('cur', k === step); avA[a][b].classList.toggle('cur', k === step);
+  }
+  const sum = v.reduce((s, x) => s + x, 0);
+  $('#calcA').innerHTML = `<div>Position (${i}, ${j})</div><div>max(${v.join(', ')}) = <span class="res">${mx}</span></div><div>moyenne = (${v.join(' + ')}) / ${v.length} = ${sum} / ${v.length} = <span class="res">${fmt(sum / v.length)}</span></div>`;
+}
+buildA();
+
+// ---------- Partie 2
+const KB = {
+  moy: { n: 'Moyenneur 3×3', w: [[1,1,1],[1,1,1],[1,1,1]].map(r => r.map(x => x / 9)) },
+  sob: { n: 'Sobel X (bords verticaux)', w: [[-1,0,1],[-2,0,2],[-1,0,1]] },
+  rnd: { n: 'Poids « appris » (aléatoires)', w: null },
+};
+let XB = randGrid(8, rng(3)), kb = 'sob', WB = KB.sob.w;
+const selB = h('select', { onchange: e => { kb = e.target.value; WB = kb === 'rnd' ? Array.from({ length: 3 }, () => Array.from({ length: 3 }, () => Math.round((Math.random() * 2 - 1) * 10) / 10)) : KB[kb].w; renderB(pB.i); } },
+  Object.entries(KB).map(([k, v]) => h('option', { value: k, selected: k === kb }, v.n)));
+$('#optsB').append(h('label', { class: 'ctl' }, h('span', {}, 'Filtre de la convolution'), selB),
+  h('button', { class: 'btn', onclick: () => { XB = randGrid(8); buildB(); } }, '🎲 Nouvelle entrée'));
+const pB = new Player({ n: 16, onStep: renderB, speed: 1100 }); const barB = playerBar(pB); $('#barB').append(barB);
+let inB, poB, coB;
+const xb = (i, j) => (i < 0 || j < 0 || i > 7 || j > 7) ? 0 : XB[i][j];
+const convB = (i, j) => { let s = 0; for (let a = 0; a < 3; a++) for (let b = 0; b < 3; b++) s += xb(i * 2 - 1 + a, j * 2 - 1 + b) * WB[a][b]; return s; };
+function buildB() {
+  const st = $('#stageB'); st.innerHTML = '';
+  const cs = innerWidth < 640 ? 30 : 38;
+  const m = matrix(8, 8, { cs }); inB = m.cells;
+  inB.forEach((r, i) => r.forEach((d, j) => { d.textContent = XB[i][j]; d.style.background = seqColor(XB[i][j], 9, 'var(--muted)', 40); }));
+  const p = matrix(4, 4, { cs }), c = matrix(4, 4, { cs }); poB = p.cells; coB = c.cells;
+  [poB, coB].forEach(C => C.forEach((r, i) => r.forEach((d, j) => { d.classList.add('clickable'); d.onclick = () => { barB.stopUI(); pB.go(i * 4 + j); }; })));
+  st.append(h('div', {}, h('div', { class: 'mlabel' }, 'ENTRÉE 8×8'), m.el), h('div', { class: 'op' }, '→'),
+    h('div', { class: 'outs' }, h('div', {}, h('div', { class: 'mlabel' }, 'MAX POOL 2×2, S=2 → 4×4'), p.el), h('div', {}, h('div', { class: 'mlabel' }, 'CONV 3×3, S=2, P=1 → 4×4'), c.el)));
+  $('#kpiB').innerHTML = `<div class="kpi"><div class="v">0</div><div class="k">paramètre pour le pooling</div></div><div class="kpi"><div class="v">10</div><div class="k">paramètres pour la conv. (3·3·1 + 1 biais)</div></div><div class="kpi"><div class="v">(3·3·C + 1)·K</div><div class="k">en général, C canaux en entrée, K filtres</div></div>`;
+  renderB(pB.i);
+}
+function renderB(step) {
+  const i = Math.floor(step / 4), j = step % 4;
+  inB.forEach((r, a) => r.forEach((d, b) => {
+    d.classList.toggle('win', a >= i * 2 && a < i * 2 + 2 && b >= j * 2 && b < j * 2 + 2);
+    d.classList.toggle('win2', a >= i * 2 - 1 && a <= i * 2 + 1 && b >= j * 2 - 1 && b <= j * 2 + 1);
+  }));
+  let cm = 1e-9; for (let a = 0; a < 4; a++) for (let b = 0; b < 4; b++) cm = Math.max(cm, Math.abs(convB(a, b)));
+  for (let a = 0; a < 4; a++) for (let b = 0; b < 4; b++) {
+    const k = a * 4 + b, done = k <= step, m = Math.max(...win(XB, a, b, 2, 2)), cv = convB(a, b);
+    poB[a][b].textContent = done ? m : '·'; poB[a][b].style.background = done ? seqColor(m, 9, 'var(--hl)', 70) : 'var(--zero)';
+    coB[a][b].textContent = done ? fmt(cv, 1) : '·'; coB[a][b].style.background = done ? divColor(cv, cm) : 'var(--zero)';
+    poB[a][b].classList.toggle('cur', k === step); coB[a][b].classList.toggle('cur', k === step);
+  }
+  const t = []; for (let a = 0; a < 3; a++) for (let b = 0; b < 3; b++) t.push(`${xb(i * 2 - 1 + a, j * 2 - 1 + b)}×${par(Math.round(WB[a][b] * 100) / 100)}`);
+  $('#calcB').innerHTML = `<div>Max pooling : max(${win(XB, i, j, 2, 2).join(', ')}) = <span class="res">${Math.max(...win(XB, i, j, 2, 2))}</span></div><div>Convolution : ${t.join(' + ')} = <span class="res">${fmt(convB(i, j))}</span> <span class="muted">(les cases hors de l’image valent 0 : remplissage P = 1)</span></div>`;
+}
+buildB();
+</script>
+</body>
+</html>

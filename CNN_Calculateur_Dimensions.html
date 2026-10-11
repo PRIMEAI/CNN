@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f4ee;--panel:#ffffff;--ink:#1c1b19;--muted:#6b675f;--line:#e2ddd2;--soft:#efebe2;
+  --accent:#0f6e66;--accent-ink:#ffffff;--accent-soft:#d8ecea;--hl:#e09a2d;--hl-soft:#fbe8c6;
+  --pos:#2a6fdb;--neg:#d2453b;--zero:#f4f2ec;--r:#d2453b;--g:#2f9e57;--b:#2a6fdb;
+  --shadow:0 1px 2px rgba(30,25,15,.06),0 4px 16px rgba(30,25,15,.05);
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#151513;--panel:#1e1d1a;--ink:#ece9e2;--muted:#a19b8f;--line:#35322c;--soft:#272520;
+  --accent:#4fb5aa;--accent-ink:#0d1f1d;--accent-soft:#1b3b38;--hl:#f0b456;--hl-soft:#41321a;
+  --pos:#6ea3ff;--neg:#ff7d72;--zero:#25231f;--r:#ff7d72;--g:#5cc97f;--b:#6ea3ff;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.25);}}
+:root[data-theme="dark"]{
+  --bg:#151513;--panel:#1e1d1a;--ink:#ece9e2;--muted:#a19b8f;--line:#35322c;--soft:#272520;
+  --accent:#4fb5aa;--accent-ink:#0d1f1d;--accent-soft:#1b3b38;--hl:#f0b456;--hl-soft:#41321a;
+  --pos:#6ea3ff;--neg:#ff7d72;--zero:#25231f;--r:#ff7d72;--g:#5cc97f;--b:#6ea3ff;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.25);}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 var(--sans);}
+.wrap{max-width:1180px;margin:0 auto;padding:28px 16px 48px}
+header.top{margin-bottom:22px}
+.eyebrow{font:500 12px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.eyebrow a{color:var(--muted);text-decoration:none}.eyebrow a:hover{color:var(--accent)}
+h1{font-size:clamp(26px,4vw,36px);line-height:1.15;margin:8px 0 10px;letter-spacing:-.01em;font-weight:600}
+h2{font-size:19px;margin:0 0 12px;font-weight:600}
+h3{font-size:15px;margin:0 0 8px;font-weight:600}
+.lead{max-width:760px;color:var(--muted);margin:0;font-size:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow)}
+.stack{display:flex;flex-direction:column;gap:16px}
+.row{display:flex;gap:16px;flex-wrap:wrap}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.mono{font-family:var(--mono)}
+.controls{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center}
+.ctl{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--muted);min-width:0}
+.ctl b{color:var(--ink);font:600 13px var(--mono)}
+.ctl .lab{display:flex;justify-content:space-between;gap:10px}
+select,input[type=number],input[type=text]{font:14px var(--sans);color:var(--ink);background:var(--soft);border:1px solid var(--line);border-radius:8px;padding:6px 8px;min-height:34px}
+input[type=number]{width:72px;font-family:var(--mono)}
+input[type=range]{accent-color:var(--accent);width:150px}
+.btn{font:500 14px var(--sans);color:var(--ink);background:var(--soft);border:1px solid var(--line);border-radius:9px;padding:7px 13px;cursor:pointer;min-height:36px;display:inline-flex;align-items:center;gap:6px;transition:background .15s,border-color .15s}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.on{background:var(--accent-soft);border-color:var(--accent);color:var(--ink)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.seg button{font:500 13px var(--sans);background:var(--soft);color:var(--ink);border:0;padding:7px 12px;cursor:pointer;min-height:34px}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button.on{background:var(--accent);color:var(--accent-ink)}
+.mat{display:inline-grid;gap:3px;font-family:var(--mono)}
+.cell{width:var(--cs,40px);height:var(--cs,40px);display:flex;align-items:center;justify-content:center;border-radius:6px;background:var(--zero);font-size:calc(var(--cs,40px)*.36);position:relative;border:1.5px solid transparent;transition:background .2s,border-color .15s,box-shadow .15s;color:var(--ink);user-select:none}
+.cell.pad{background:transparent;border:1.5px dashed var(--line);color:var(--muted)}
+.cell.win{border-color:var(--hl);box-shadow:0 0 0 2px var(--hl-soft)}
+.cell.cur{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.cell.dim{opacity:.35}
+.cell .w{position:absolute;right:3px;bottom:1px;font-size:calc(var(--cs,40px)*.24);color:var(--hl);font-weight:600}
+.cell input{width:100%;height:100%;border:0;background:transparent;text-align:center;font:inherit;color:inherit;padding:0}
+.cell input:focus{outline:2px solid var(--accent);border-radius:6px}
+.mlabel{font:600 12px var(--mono);color:var(--muted);margin-bottom:6px;letter-spacing:.03em}
+.formula{font-family:var(--mono);font-size:14px;background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:12px 14px;overflow-x:auto;line-height:1.8}
+.formula .t{display:inline-block;padding:0 5px;border-radius:5px;background:var(--panel);border:1px solid var(--line);margin:2px 1px}
+.formula .res{color:var(--accent);font-weight:600}
+.pill{display:inline-flex;align-items:center;gap:6px;font:600 12px var(--mono);padding:3px 9px;border-radius:999px;background:var(--accent-soft);color:var(--ink)}
+.pill.warn{background:var(--hl-soft)}
+.pill.bad{background:color-mix(in oklab,var(--neg) 22%,transparent)}
+.note{border-left:3px solid var(--accent);padding:8px 12px;background:var(--soft);border-radius:0 8px 8px 0;font-size:14px}
+.note.warn{border-color:var(--hl)}
+.note.bad{border-color:var(--neg)}
+.kpis{display:flex;gap:10px;flex-wrap:wrap}
+.kpi{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:130px}
+.kpi .v{font:600 22px var(--mono);color:var(--ink)}
+.kpi .k{font-size:12px;color:var(--muted)}
+.op{font:600 22px var(--mono);color:var(--muted);align-self:center;padding:0 4px}
+.scrollx{overflow-x:auto;max-width:100%}
+footer{margin-top:36px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:14px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer a{color:var(--accent)}
+svg text{font-family:var(--sans)}
+kbd{font:12px var(--mono);background:var(--soft);border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:1px 5px}
+@media (max-width:640px){.wrap{padding:20px 16px 40px}.card{padding:14px}input[type=range]{width:120px}}
+</style>
+<title>CNN – Calculateur de dimensions</title>
+<style>
+.grid2{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:16px}
+@media (max-width:860px){.grid2{grid-template-columns:1fr}}
+#viz svg{width:100%;height:auto;display:block}
+.presets{display:flex;flex-wrap:wrap;gap:8px}
+.presets .btn{font-size:13px;padding:5px 10px;min-height:32px}
+.big{font:600 28px var(--mono)}
+.numctl{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--muted)}
+.numctl .in{display:flex;align-items:center;gap:4px}
+.numctl button{width:30px;height:34px;border-radius:8px;border:1px solid var(--line);background:var(--soft);color:var(--ink);cursor:pointer;font:600 16px var(--mono)}
+.numctl input{width:64px;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <div class="eyebrow"><span>Réseaux convolutifs · Diapos 64–75, 93–101</span><a href="index.html">← Toutes les animations</a></div>
+  <h1>Calculateur de dimensions d’une couche de convolution</h1>
+  <p class="lead">Réglez la taille de l’entrée N×N×C, la taille du filtre F, le pas S, le remplissage P et le nombre de filtres K. Le calculateur donne la taille de sortie, le nombre de paramètres et montre le filtre qui parcourt l’entrée, y compris quand il « déborde ».</p>
+</header>
+<div class="stack">
+  <section class="card stack">
+    <div class="controls" id="ctl"></div>
+    <div><div class="mlabel">EXEMPLES DU COURS</div><div class="presets" id="presets"></div></div>
+  </section>
+  <div class="grid2">
+    <section class="card stack">
+      <h2>Le filtre parcourt l’entrée</h2>
+      <div id="bar"></div>
+      <div id="viz"></div>
+      <div id="vizMsg" class="small muted"></div>
+    </section>
+    <section class="card stack">
+      <h2>Résultat</h2>
+      <div class="formula" id="formula"></div>
+      <div id="status"></div>
+      <div class="kpis" id="kpis"></div>
+      <div class="formula small" id="params"></div>
+      <div id="hint"></div>
+    </section>
+  </div>
+  <section class="card stack">
+    <h2>À retenir</h2>
+    <div class="note">Taille de sortie : <span class="mono">(N − F + 2P) / S + 1</span>, qui doit être un entier. Paramètres : chaque filtre a F·F·C poids + 1 biais, donc <span class="mono">(F·F·C + 1)·K</span> paramètres. Ils ne dépendent <strong>pas</strong> de la taille N de l’image.</div>
+    <div class="note">Avec S = 1 et F impair, un remplissage <span class="mono">P = (F − 1)/2</span> conserve la taille : F = 3 → P = 1, F = 5 → P = 2, F = 7 → P = 3 (padding « same »).</div>
+    <div class="note warn">En pratique, Keras et PyTorch ne signalent pas d’erreur quand la division ne tombe pas juste : ils arrondissent vers le bas et ignorent les dernières rangées et colonnes (padding="valid"), ou ajoutent le remplissage nécessaire (padding="same" de Keras, sortie ⌈N/S⌉).</div>
+  </section>
+</div>
+<footer><span>Deep Learning · Réseaux convolutifs – principes de base</span><a href="index.html">Toutes les animations →</a></footer>
+</div>
+<script>
+// ---- utilitaires communs ----
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+function h(tag, attrs = {}, ...kids) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs || {})) {
+    if (k === 'class') e.className = v;
+    else if (k === 'style' && v && typeof v === 'object') { for (const [sk, sv] of Object.entries(v)) { if (sv == null) continue; sk.startsWith('--') ? e.style.setProperty(sk, sv) : (e.style[sk] = sv); } }
+    else if (k.startsWith('on')) e.addEventListener(k.slice(2), v);
+    else if (k === 'html') e.innerHTML = v;
+    else if (v !== false && v != null) e.setAttribute(k, v);
+  }
+  for (const c of kids.flat()) if (c != null) e.append(c.nodeType ? c : document.createTextNode(c));
+  return e;
+}
+// nombres au format français (virgule décimale, signe moins typographique)
+function fmt(x, d = 2) {
+  if (!isFinite(x)) return '—';
+  let s = (Math.round(x * 10 ** d) / 10 ** d).toString();
+  if (Object.is(Math.round(x * 10 ** d), -0) || s === '-0') s = '0';
+  return s.replace('.', ',').replace('-', '−');
+}
+function fmtInt(n) { return Math.round(n).toLocaleString('fr-CA').replace(/ | /g, ' '); }
+function par(x) { return x < 0 ? '(' + fmt(x) + ')' : fmt(x); }
+const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
+// couleur divergente (négatif → rouge, positif → bleu)
+function divColor(v, m) {
+  if (!m) return 'var(--zero)';
+  const t = clamp(Math.abs(v) / m, 0, 1);
+  return `color-mix(in oklab, ${v < 0 ? 'var(--neg)' : 'var(--pos)'} ${Math.round(t * 70)}%, var(--zero))`;
+}
+function seqColor(v, m, c = 'var(--accent)', top = 75) {
+  const t = m ? clamp(v / m, 0, 1) : 0;
+  return `color-mix(in oklab, ${c} ${Math.round(t * top)}%, var(--zero))`;
+}
+// générateur pseudo-aléatoire reproductible
+function rng(seed = 1) { let s = seed >>> 0; return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296); }
+// lecteur pas à pas (lecture / pause / vitesse)
+class Player {
+  constructor({ n, onStep, speed = 900 }) { this.n = n; this.i = 0; this.onStep = onStep; this.speed = speed; this.t = null; }
+  go(i) { this.i = ((i % this.n) + this.n) % this.n; this.onStep(this.i); }
+  next() { this.go(this.i + 1); } prev() { this.go(this.i - 1); }
+  play() { this.stop(); this.t = setInterval(() => this.next(), this.speed); this.playing = true; }
+  stop() { clearInterval(this.t); this.t = null; this.playing = false; }
+  toggle() { this.playing ? this.stop() : this.play(); return this.playing; }
+  setSpeed(ms) { this.speed = ms; if (this.playing) this.play(); }
+}
+// barre de contrôle standard pour un Player
+function playerBar(p, { extra = [] } = {}) {
+  const play = h('button', { class: 'btn primary', onclick: () => { play.textContent = p.toggle() ? '❚❚ Pause' : '▶ Lecture'; } }, '▶ Lecture');
+  const sp = h('input', { type: 'range', min: 150, max: 2000, step: 50, value: 2150 - p.speed, oninput: e => p.setSpeed(2150 - +e.target.value), 'aria-label': 'Vitesse' });
+  const bar = h('div', { class: 'controls' },
+    h('button', { class: 'btn', onclick: () => { p.stop(); play.textContent = '▶ Lecture'; p.prev(); } }, '◀ Précédent'),
+    play,
+    h('button', { class: 'btn', onclick: () => { p.stop(); play.textContent = '▶ Lecture'; p.next(); } }, 'Suivant ▶'),
+    h('label', { class: 'ctl' }, h('span', {}, 'Vitesse'), sp), ...extra);
+  bar.stopUI = () => { p.stop(); play.textContent = '▶ Lecture'; };
+  return bar;
+}
+// contrôle curseur avec étiquette et valeur
+function slider({ label, min, max, step = 1, value, onInput, fmtv = v => v, width }) {
+  const out = h('b', {}, fmtv(value));
+  const inp = h('input', { type: 'range', min, max, step, value, style: width ? { width } : null });
+  inp.addEventListener('input', () => { out.textContent = fmtv(+inp.value); onInput(+inp.value); });
+  const w = h('label', { class: 'ctl' }, h('span', { class: 'lab' }, h('span', {}, label), out), inp);
+  w.input = inp; w.set = v => { inp.value = v; out.textContent = fmtv(+v); };
+  return w;
+}
+function segmented(options, value, onChange) {
+  const s = h('div', { class: 'seg', role: 'group' });
+  const btns = options.map(([v, l]) => h('button', { class: v === value ? 'on' : '', onclick: () => { btns.forEach(b => b.classList.remove('on')); b2[v].classList.add('on'); onChange(v); } }, l));
+  const b2 = {}; options.forEach(([v], i) => b2[v] = btns[i]);
+  s.append(...btns); s.set = v => { btns.forEach(b => b.classList.remove('on')); b2[v] && b2[v].classList.add('on'); };
+  return s;
+}
+// matrice de cellules ; retourne {el, cells[r][c]}
+function matrix(rows, cols, { cs = 40, gap = 3, cls = '' } = {}) {
+  const el = h('div', { class: 'mat ' + cls, style: { gridTemplateColumns: `repeat(${cols}, var(--cs))`, '--cs': cs + 'px', gap: gap + 'px' } });
+  const cells = [];
+  for (let r = 0; r < rows; r++) { cells.push([]); for (let c = 0; c < cols; c++) { const d = h('div', { class: 'cell' }); el.append(d); cells[r].push(d); } }
+  return { el, cells };
+}
+
+let P = { N: 7, C: 1, F: 3, S: 3, P: 0, K: 1 };
+const LIM = { N: [1, 64], C: [1, 1024], F: [1, 11], S: [1, 6], P: [0, 6], K: [1, 1024] };
+const LAB = { N: 'Entrée N', C: 'Canaux C', F: 'Filtre F', S: 'Pas S', P: 'Remplissage P', K: 'Filtres K' };
+const inputs = {};
+for (const k of Object.keys(P)) {
+  const inp = h('input', { type: 'number', min: LIM[k][0], max: LIM[k][1], value: P[k] });
+  const set = v => { P[k] = clamp(Math.round(v) || LIM[k][0], ...LIM[k]); inp.value = P[k]; rebuild(); };
+  inp.addEventListener('change', () => set(+inp.value));
+  inputs[k] = inp;
+  $('#ctl').append(h('div', { class: 'numctl' }, h('span', {}, LAB[k]), h('div', { class: 'in' },
+    h('button', { onclick: () => set(P[k] - 1), 'aria-label': 'moins' }, '−'), inp, h('button', { onclick: () => set(P[k] + 1), 'aria-label': 'plus' }, '+'))));
+}
+const PRESETS = [
+  ['7×7, F=3, S=1', { N: 7, C: 1, F: 3, S: 1, P: 0, K: 1 }], ['7×7, F=3, S=2', { N: 7, C: 1, F: 3, S: 2, P: 0, K: 1 }],
+  ['7×7, F=3, S=3 (?)', { N: 7, C: 1, F: 3, S: 3, P: 0, K: 1 }], ['9×9, F=3, S=3', { N: 9, C: 1, F: 3, S: 3, P: 0, K: 1 }],
+  ['5×5, F=3, S=2, P=1', { N: 5, C: 1, F: 3, S: 2, P: 1, K: 1 }], ['7×7, F=3, S=1, P=1', { N: 7, C: 1, F: 3, S: 1, P: 1, K: 1 }],
+  ['32×32×3, 10 filtres 5×5, S=1, P=2', { N: 32, C: 3, F: 5, S: 1, P: 2, K: 10 }], ['CS231n : 5×5×3, K=2, F=3, S=2, P=1', { N: 5, C: 3, F: 3, S: 2, P: 1, K: 2 }],
+  ['32×32×3, 6 filtres 5×5', { N: 32, C: 3, F: 5, S: 1, P: 0, K: 6 }]];
+PRESETS.forEach(([l, v]) => $('#presets').append(h('button', { class: 'btn', onclick: () => { Object.assign(P, v); for (const k in P) inputs[k].value = P[k]; rebuild(); } }, l)));
+
+let frames = [], M = 0, valid = true;
+const player = new Player({ n: 1, onStep: draw, speed: 700 });
+const bar = playerBar(player); $('#bar').append(bar);
+function rebuild() {
+  const Np = P.N + 2 * P.P, q = (Np - P.F) / P.S + 1;
+  valid = Np >= P.F && Number.isInteger(q); M = Np >= P.F ? Math.floor(q) : 0;
+  $('#formula').innerHTML = `(N − F + 2P) / S + 1<br>= (${P.N} − ${P.F} + 2·${P.P}) / ${P.S} + 1<br>= ${Np - P.F} / ${P.S} + 1 = <span class="res">${fmt(q, 2)}</span>`;
+  $('#status').innerHTML = Np < P.F ? `<div class="note bad">Le filtre (${P.F}×${P.F}) est plus grand que l’entrée remplie (${Np}×${Np}).</div>`
+    : valid ? `<span class="pill">✓ Configuration valide · sortie ${M}×${M}×${P.K}</span>`
+    : `<div class="note bad"><strong>Ne marche pas :</strong> ${Np - P.F} n’est pas divisible par ${P.S}. Après ${M} positions, le filtre suivant déborderait de ${P.S - (Np - P.F) % P.S} case(s). Une bibliothèque tronquerait à ${M}×${M} et ignorerait ${(Np - P.F) % P.S} rangée(s)/colonne(s).</div>`;
+  const w = P.F * P.F * P.C, prm = (w + 1) * P.K, Mo = valid ? M : M;
+  $('#kpis').innerHTML = `<div class="kpi"><div class="v">${valid ? `${M}×${M}×${P.K}` : '—'}</div><div class="k">volume de sortie</div></div><div class="kpi"><div class="v">${fmtInt(prm)}</div><div class="k">paramètres</div></div><div class="kpi"><div class="v">${Mo ? fmtInt(Mo * Mo * P.K * w) : '—'}</div><div class="k">multiplications</div></div>`;
+  $('#params').innerHTML = `Poids par filtre : F·F·C = ${P.F}·${P.F}·${P.C} = ${fmtInt(w)}<br>Paramètres : (${fmtInt(w)} + 1) × ${P.K} = <span class="res">${fmtInt(prm)}</span><br>Multiplications : M²·K·F²·C = ${Mo}²·${P.K}·${P.F}²·${P.C}`;
+  const same = P.S === 1 && P.F % 2 === 1;
+  $('#hint').innerHTML = same ? (P.P === (P.F - 1) / 2 ? `<div class="note">P = (F − 1)/2 = ${P.P} : la sortie a la même taille que l’entrée (« same »).</div>` : `<div class="note">Pour conserver la taille ${P.N}×${P.N}, il faudrait P = (F − 1)/2 = ${(P.F - 1) / 2}.</div>`) : '';
+  // trames : positions valides, plus une position qui déborde à la fin de chaque rangée si invalide
+  frames = [];
+  if (Np >= P.F) {
+    const rows = valid ? M : M + 1;
+    for (let r = 0; r < rows; r++) {
+      if (r === M) { frames.push({ r, c: 0, over: true }); break; }
+      for (let c = 0; c < M; c++) frames.push({ r, c });
+      if (!valid) frames.push({ r, c: M, over: true });
+    }
+  }
+  player.n = Math.max(1, frames.length); player.i = 0; draw(0);
+}
+function draw(i) {
+  const Np = P.N + 2 * P.P, ext = valid ? 0 : P.S, tot = Np + ext;
+  const cs = Math.max(6, Math.min(30, Math.floor(380 / tot))), gap = cs > 12 ? 2 : 1, step = cs + gap;
+  const outCs = Math.max(6, Math.min(30, Math.floor(220 / Math.max(M, 1)))), ostep = outCs + (outCs > 12 ? 2 : 1);
+  const W1 = tot * step, H1 = tot * step, ox = W1 + 40;
+  const Wt = ox + Math.max(M, 1) * ostep + 4, Ht = Math.max(H1, M * ostep) + 30;
+  const f = frames[i];
+  let s = `<svg viewBox="0 0 ${Wt} ${Ht}" style="max-width:${Wt}px" xmlns="http://www.w3.org/2000/svg">`;
+  s += `<text x="0" y="12" font-size="12" fill="var(--muted)" font-weight="600">Entrée ${P.N}×${P.N}${P.P ? ` + P=${P.P}` : ''}</text>`;
+  s += `<text x="${ox}" y="12" font-size="12" fill="var(--muted)" font-weight="600">Sortie ${M}×${M}${valid ? '' : ' (tronquée)'}</text><g transform="translate(0,22)">`;
+  for (let r = 0; r < Np; r++) for (let c = 0; c < Np; c++) {
+    const pad = r < P.P || c < P.P || r >= P.N + P.P || c >= P.N + P.P;
+    const dropped = !valid && (r >= P.F + (M - 1) * P.S || c >= P.F + (M - 1) * P.S);
+    s += `<rect x="${c * step}" y="${r * step}" width="${cs}" height="${cs}" rx="${cs > 12 ? 4 : 1}" fill="${pad ? (cs > 12 ? 'none' : 'var(--line)') : dropped ? 'color-mix(in oklab,var(--neg) 18%,var(--zero))' : 'var(--soft)'}" stroke="${pad ? (cs > 12 ? 'var(--muted)' : 'none') : (cs > 12 ? 'var(--line)' : 'none')}" stroke-dasharray="${pad ? 3 : 0}"/>`;
+  }
+  if (f) {
+    const col = f.over ? 'var(--neg)' : 'var(--hl)';
+    s += `<rect x="${f.c * P.S * step - 2}" y="${f.r * P.S * step - 2}" width="${P.F * step + 2}" height="${P.F * step + 2}" rx="5" fill="${col}" fill-opacity=".18" stroke="${col}" stroke-width="2.5"/>`;
+    if (f.over) s += `<text x="${Math.min(W1 - 4, f.c * P.S * step + P.F * step / 2)}" y="${Math.min(H1 - 4, f.r * P.S * step + P.F * step / 2 + 4)}" text-anchor="middle" font-size="${Math.max(10, cs * .55)}" font-weight="700" fill="var(--neg)">✕</text>`;
+  }
+  for (let r = 0; r < M; r++) for (let c = 0; c < M; c++) {
+    const done = f && !f.over && (r < f.r || (r === f.r && c <= f.c)) || (f && f.over && r <= f.r && (r < f.r || c < M));
+    const cur = f && !f.over && r === f.r && c === f.c;
+    s += `<rect x="${ox + c * ostep}" y="${r * ostep}" width="${outCs}" height="${outCs}" rx="${outCs > 12 ? 4 : 1}" fill="${done ? 'var(--accent-soft)' : 'var(--soft)'}" stroke="${cur ? 'var(--accent)' : 'var(--line)'}" stroke-width="${cur ? 2.5 : 1}"/>`;
+  }
+  $('#viz').innerHTML = s + '</g></svg>';
+  $('#vizMsg').innerHTML = !f ? '' : f.over
+    ? `<span style="color:var(--neg);font-weight:600">Position suivante impossible :</span> le filtre sortirait de l’entrée. Les cases rosées ne sont jamais couvertes par une position valide.`
+    : `Position (${f.r}, ${f.c}) : le filtre commence en (${f.r * P.S}, ${f.c * P.S}) de l’entrée${P.P ? ' remplie' : ''}. Les cases du bord (en pointillé, ou grisées quand la grille est grande) sont le remplissage (zéros).`;
+}
+rebuild();
+</script>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f4ee;--panel:#ffffff;--ink:#1c1b19;--muted:#6b675f;--line:#e2ddd2;--soft:#efebe2;
+  --accent:#0f6e66;--accent-ink:#ffffff;--accent-soft:#d8ecea;--hl:#e09a2d;--hl-soft:#fbe8c6;
+  --pos:#2a6fdb;--neg:#d2453b;--zero:#f4f2ec;--r:#d2453b;--g:#2f9e57;--b:#2a6fdb;
+  --shadow:0 1px 2px rgba(30,25,15,.06),0 4px 16px rgba(30,25,15,.05);
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#151513;--panel:#1e1d1a;--ink:#ece9e2;--muted:#a19b8f;--line:#35322c;--soft:#272520;
+  --accent:#4fb5aa;--accent-ink:#0d1f1d;--accent-soft:#1b3b38;--hl:#f0b456;--hl-soft:#41321a;
+  --pos:#6ea3ff;--neg:#ff7d72;--zero:#25231f;--r:#ff7d72;--g:#5cc97f;--b:#6ea3ff;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.25);}}
+:root[data-theme="dark"]{
+  --bg:#151513;--panel:#1e1d1a;--ink:#ece9e2;--muted:#a19b8f;--line:#35322c;--soft:#272520;
+  --accent:#4fb5aa;--accent-ink:#0d1f1d;--accent-soft:#1b3b38;--hl:#f0b456;--hl-soft:#41321a;
+  --pos:#6ea3ff;--neg:#ff7d72;--zero:#25231f;--r:#ff7d72;--g:#5cc97f;--b:#6ea3ff;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.25);}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 var(--sans);}
+.wrap{max-width:1180px;margin:0 auto;padding:28px 16px 48px}
+header.top{margin-bottom:22px}
+.eyebrow{font:500 12px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.eyebrow a{color:var(--muted);text-decoration:none}.eyebrow a:hover{color:var(--accent)}
+h1{font-size:clamp(26px,4vw,36px);line-height:1.15;margin:8px 0 10px;letter-spacing:-.01em;font-weight:600}
+h2{font-size:19px;margin:0 0 12px;font-weight:600}
+h3{font-size:15px;margin:0 0 8px;font-weight:600}
+.lead{max-width:760px;color:var(--muted);margin:0;font-size:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow)}
+.stack{display:flex;flex-direction:column;gap:16px}
+.row{display:flex;gap:16px;flex-wrap:wrap}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.mono{font-family:var(--mono)}
+.controls{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center}
+.ctl{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--muted);min-width:0}
+.ctl b{color:var(--ink);font:600 13px var(--mono)}
+.ctl .lab{display:flex;justify-content:space-between;gap:10px}
+select,input[type=number],input[type=text]{font:14px var(--sans);color:var(--ink);background:var(--soft);border:1px solid var(--line);border-radius:8px;padding:6px 8px;min-height:34px}
+input[type=number]{width:72px;font-family:var(--mono)}
+input[type=range]{accent-color:var(--accent);width:150px}
+.btn{font:500 14px var(--sans);color:var(--ink);background:var(--soft);border:1px solid var(--line);border-radius:9px;padding:7px 13px;cursor:pointer;min-height:36px;display:inline-flex;align-items:center;gap:6px;transition:background .15s,border-color .15s}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.on{background:var(--accent-soft);border-color:var(--accent);color:var(--ink)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.seg button{font:500 13px var(--sans);background:var(--soft);color:var(--ink);border:0;padding:7px 12px;cursor:pointer;min-height:34px}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button.on{background:var(--accent);color:var(--accent-ink)}
+.mat{display:inline-grid;gap:3px;font-family:var(--mono)}
+.cell{width:var(--cs,40px);height:var(--cs,40px);display:flex;align-items:center;justify-content:center;border-radius:6px;background:var(--zero);font-size:calc(var(--cs,40px)*.36);position:relative;border:1.5px solid transparent;transition:background .2s,border-color .15s,box-shadow .15s;color:var(--ink);user-select:none}
+.cell.pad{background:transparent;border:1.5px dashed var(--line);color:var(--muted)}
+.cell.win{border-color:var(--hl);box-shadow:0 0 0 2px var(--hl-soft)}
+.cell.cur{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.cell.dim{opacity:.35}
+.cell .w{position:absolute;right:3px;bottom:1px;font-size:calc(var(--cs,40px)*.24);color:var(--hl);font-weight:600}
+.cell input{width:100%;height:100%;border:0;background:transparent;text-align:center;font:inherit;color:inherit;padding:0}
+.cell input:focus{outline:2px solid var(--accent);border-radius:6px}
+.mlabel{font:600 12px var(--mono);color:var(--muted);margin-bottom:6px;letter-spacing:.03em}
+.formula{font-family:var(--mono);font-size:14px;background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:12px 14px;overflow-x:auto;line-height:1.8}
+.formula .t{display:inline-block;padding:0 5px;border-radius:5px;background:var(--panel);border:1px solid var(--line);margin:2px 1px}
+.formula .res{color:var(--accent);font-weight:600}
+.pill{display:inline-flex;align-items:center;gap:6px;font:600 12px var(--mono);padding:3px 9px;border-radius:999px;background:var(--accent-soft);color:var(--ink)}
+.pill.warn{background:var(--hl-soft)}
+.pill.bad{background:color-mix(in oklab,var(--neg) 22%,transparent)}
+.note{border-left:3px solid var(--accent);padding:8px 12px;background:var(--soft);border-radius:0 8px 8px 0;font-size:14px}
+.note.warn{border-color:var(--hl)}
+.note.bad{border-color:var(--neg)}
+.kpis{display:flex;gap:10px;flex-wrap:wrap}
+.kpi{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:130px}
+.kpi .v{font:600 22px var(--mono);color:var(--ink)}
+.kpi .k{font-size:12px;color:var(--muted)}
+.op{font:600 22px var(--mono);color:var(--muted);align-self:center;padding:0 4px}
+.scrollx{overflow-x:auto;max-width:100%}
+footer{margin-top:36px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:14px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer a{color:var(--accent)}
+svg text{font-family:var(--sans)}
+kbd{font:12px var(--mono);background:var(--soft);border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:1px 5px}
+@media (max-width:640px){.wrap{padding:20px 16px 40px}.card{padding:14px}input[type=range]{width:120px}}
+</style>
+<title>Principes des réseaux convolutifs</title>
+<style>
+.list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.item{display:flex;flex-direction:column;gap:6px;text-decoration:none;color:inherit;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;box-shadow:var(--shadow);transition:border-color .15s,transform .15s}
+.item:hover{border-color:var(--accent);transform:translateY(-2px)}
+.item .num{font:600 12px var(--mono);color:var(--accent)}
+.item .t{font-weight:600;font-size:16px}
+.item .d{color:var(--muted);font-size:14px}
+.item .s{font:12px var(--mono);color:var(--muted);margin-top:auto;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;padding-top:8px;border-top:1px solid var(--line)}
+.item .f{color:var(--accent);word-break:break-all}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <div class="eyebrow"><span>Deep Learning · Animations interactives</span></div>
+  <h1>Principes des réseaux convolutifs</h1>
+  <p class="lead">Douze animations interactives pour accompagner le cours, dans l’ordre des diapos. Chaque page fonctionne seule dans le navigateur, sur ordinateur comme sur téléphone.</p>
+</header>
+<div class="list" id="list"></div>
+<footer><span>Deep Learning · Réseaux convolutifs – principes de base</span></footer>
+</div>
+<script>
+const P = [
+  ['CNN_Convolution_2D.html', 'Convolution 2D pas à pas', 'Le masque glisse sur l’entrée ; calcul détaillé de chaque case. Moyenneur, Sobel, Laplacien, netteté ou poids personnalisés.', 'Diapos 7–19'],
+  ['CNN_Filtres_Image.html', 'Laboratoire de filtres sur une image', 'Sobel et Gabor (orientation, longueur d’onde) appliqués en direct à une photo ou à votre propre image.', 'Diapos 20–23'],
+  ['CNN_Convolution_Profondeur.html', 'Convolution en profondeur, plusieurs filtres', 'Entrée 5×5×3, filtres W0 et W1, biais, réglage de F, S, P et K, calcul canal par canal (façon CS231n).', 'Diapos 28–38, 51'],
+  ['CNN_Activation_ReLU.html', 'Fonction d’activation sur une carte', 'Carte avant et après ReLU, Leaky ReLU, ELU, sigmoïde ou tanh, avec l’effet du biais.', 'Diapos 54–55'],
+  ['CNN_Normalisation.html', 'Normalisation : de LRN à BatchNorm', 'Histogrammes d’un mini-batch avant et après BatchNorm, γ et β réglables ; LRN entre canaux voisins.', 'Diapo 58'],
+  ['CNN_Softmax.html', 'Softmax interactif', 'Scores réglables, probabilités, température et perte d’entropie croisée.', 'Diapos 60, 127'],
+  ['CNN_Calculateur_Dimensions.html', 'Calculateur de dimensions', 'N, F, S, P, K : taille de sortie, nombre de paramètres, et le filtre qui « déborde » quand la configuration est invalide.', 'Diapos 64–75, 93–101'],
+  ['CNN_Champ_Recepteur.html', 'Champ récepteur de filtres empilés', 'Survolez un neurone pour voir sa zone d’influence ; deux 3×3 valent un 5×5, avec moins de paramètres.', 'Diapo 102'],
+  ['CNN_LeNet5.html', 'Explorateur LeNet-5', 'Dessinez un chiffre et explorez chaque couche : dimensions, paramètres, cartes de caractéristiques.', 'Diapos 103, 139'],
+  ['CNN_Convolution_1x1.html', 'Convolution 1×1 et bottleneck', 'Chaque pixel-colonne passe par un produit matrice-vecteur ; compteur de paramètres et d’opérations.', 'Diapos 104–107'],
+  ['CNN_Neurone_Local.html', 'Connexions locales et partage de poids', 'Couche entièrement connectée, locale ou convolutive : connexions et nombre de paramètres comparés.', 'Diapos 109–112'],
+  ['CNN_Pooling.html', 'Pooling : max, moyenne, conv. à pas 2', 'Max et average pooling côte à côte, F et S réglables ; comparaison avec une convolution à pas 2.', 'Diapos 113–122'],
+];
+const L = document.getElementById('list');
+P.forEach(([f, t, d, s], i) => { const a = document.createElement('a'); a.className = 'item'; a.href = f;
+  a.innerHTML = `<span class="num">${String(i + 1).padStart(2, '0')}</span><span class="t">${t}</span><span class="d">${d}</span><span class="s"><span class="f">${f}</span><span>${s}</span></span>`; L.append(a); });
+</script>
+</body>
+</html>

@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f4ee;--panel:#ffffff;--ink:#1c1b19;--muted:#6b675f;--line:#e2ddd2;--soft:#efebe2;
+  --accent:#0f6e66;--accent-ink:#ffffff;--accent-soft:#d8ecea;--hl:#e09a2d;--hl-soft:#fbe8c6;
+  --pos:#2a6fdb;--neg:#d2453b;--zero:#f4f2ec;--r:#d2453b;--g:#2f9e57;--b:#2a6fdb;
+  --shadow:0 1px 2px rgba(30,25,15,.06),0 4px 16px rgba(30,25,15,.05);
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#151513;--panel:#1e1d1a;--ink:#ece9e2;--muted:#a19b8f;--line:#35322c;--soft:#272520;
+  --accent:#4fb5aa;--accent-ink:#0d1f1d;--accent-soft:#1b3b38;--hl:#f0b456;--hl-soft:#41321a;
+  --pos:#6ea3ff;--neg:#ff7d72;--zero:#25231f;--r:#ff7d72;--g:#5cc97f;--b:#6ea3ff;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.25);}}
+:root[data-theme="dark"]{
+  --bg:#151513;--panel:#1e1d1a;--ink:#ece9e2;--muted:#a19b8f;--line:#35322c;--soft:#272520;
+  --accent:#4fb5aa;--accent-ink:#0d1f1d;--accent-soft:#1b3b38;--hl:#f0b456;--hl-soft:#41321a;
+  --pos:#6ea3ff;--neg:#ff7d72;--zero:#25231f;--r:#ff7d72;--g:#5cc97f;--b:#6ea3ff;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.25);}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 var(--sans);}
+.wrap{max-width:1180px;margin:0 auto;padding:28px 16px 48px}
+header.top{margin-bottom:22px}
+.eyebrow{font:500 12px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.eyebrow a{color:var(--muted);text-decoration:none}.eyebrow a:hover{color:var(--accent)}
+h1{font-size:clamp(26px,4vw,36px);line-height:1.15;margin:8px 0 10px;letter-spacing:-.01em;font-weight:600}
+h2{font-size:19px;margin:0 0 12px;font-weight:600}
+h3{font-size:15px;margin:0 0 8px;font-weight:600}
+.lead{max-width:760px;color:var(--muted);margin:0;font-size:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow)}
+.stack{display:flex;flex-direction:column;gap:16px}
+.row{display:flex;gap:16px;flex-wrap:wrap}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.mono{font-family:var(--mono)}
+.controls{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center}
+.ctl{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--muted);min-width:0}
+.ctl b{color:var(--ink);font:600 13px var(--mono)}
+.ctl .lab{display:flex;justify-content:space-between;gap:10px}
+select,input[type=number],input[type=text]{font:14px var(--sans);color:var(--ink);background:var(--soft);border:1px solid var(--line);border-radius:8px;padding:6px 8px;min-height:34px}
+input[type=number]{width:72px;font-family:var(--mono)}
+input[type=range]{accent-color:var(--accent);width:150px}
+.btn{font:500 14px var(--sans);color:var(--ink);background:var(--soft);border:1px solid var(--line);border-radius:9px;padding:7px 13px;cursor:pointer;min-height:36px;display:inline-flex;align-items:center;gap:6px;transition:background .15s,border-color .15s}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.on{background:var(--accent-soft);border-color:var(--accent);color:var(--ink)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.seg button{font:500 13px var(--sans);background:var(--soft);color:var(--ink);border:0;padding:7px 12px;cursor:pointer;min-height:34px}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button.on{background:var(--accent);color:var(--accent-ink)}
+.mat{display:inline-grid;gap:3px;font-family:var(--mono)}
+.cell{width:var(--cs,40px);height:var(--cs,40px);display:flex;align-items:center;justify-content:center;border-radius:6px;background:var(--zero);font-size:calc(var(--cs,40px)*.36);position:relative;border:1.5px solid transparent;transition:background .2s,border-color .15s,box-shadow .15s;color:var(--ink);user-select:none}
+.cell.pad{background:transparent;border:1.5px dashed var(--line);color:var(--muted)}
+.cell.win{border-color:var(--hl);box-shadow:0 0 0 2px var(--hl-soft)}
+.cell.cur{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.cell.dim{opacity:.35}
+.cell .w{position:absolute;right:3px;bottom:1px;font-size:calc(var(--cs,40px)*.24);color:var(--hl);font-weight:600}
+.cell input{width:100%;height:100%;border:0;background:transparent;text-align:center;font:inherit;color:inherit;padding:0}
+.cell input:focus{outline:2px solid var(--accent);border-radius:6px}
+.mlabel{font:600 12px var(--mono);color:var(--muted);margin-bottom:6px;letter-spacing:.03em}
+.formula{font-family:var(--mono);font-size:14px;background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:12px 14px;overflow-x:auto;line-height:1.8}
+.formula .t{display:inline-block;padding:0 5px;border-radius:5px;background:var(--panel);border:1px solid var(--line);margin:2px 1px}
+.formula .res{color:var(--accent);font-weight:600}
+.pill{display:inline-flex;align-items:center;gap:6px;font:600 12px var(--mono);padding:3px 9px;border-radius:999px;background:var(--accent-soft);color:var(--ink)}
+.pill.warn{background:var(--hl-soft)}
+.pill.bad{background:color-mix(in oklab,var(--neg) 22%,transparent)}
+.note{border-left:3px solid var(--accent);padding:8px 12px;background:var(--soft);border-radius:0 8px 8px 0;font-size:14px}
+.note.warn{border-color:var(--hl)}
+.note.bad{border-color:var(--neg)}
+.kpis{display:flex;gap:10px;flex-wrap:wrap}
+.kpi{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:130px}
+.kpi .v{font:600 22px var(--mono);color:var(--ink)}
+.kpi .k{font-size:12px;color:var(--muted)}
+.op{font:600 22px var(--mono);color:var(--muted);align-self:center;padding:0 4px}
+.scrollx{overflow-x:auto;max-width:100%}
+footer{margin-top:36px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:14px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer a{color:var(--accent)}
+svg text{font-family:var(--sans)}
+kbd{font:12px var(--mono);background:var(--soft);border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:1px 5px}
+@media (max-width:640px){.wrap{padding:20px 16px 40px}.card{padding:14px}input[type=range]{width:120px}}
+</style>
+<title>CNN – Convolution 2D</title>
+<style>
+.stage{display:flex;flex-wrap:wrap;gap:18px 22px;align-items:center;justify-content:center;padding:8px 0}
+.kfac{font:600 15px var(--mono);color:var(--hl);margin-top:6px;text-align:center}
+.cell.done{color:var(--ink)}
+.cell.todo{color:transparent}
+#calc .terms{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+.cell.clickable{cursor:pointer}
+.cell.clickable:hover{border-color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <div class="eyebrow"><span>Réseaux convolutifs · Diapos 7–19</span><a href="index.html">← Toutes les animations</a></div>
+  <h1>Convolution 2D pas à pas</h1>
+  <p class="lead">Le masque (filtre) glisse sur l’image d’entrée. À chaque position, on multiplie chaque pixel couvert par le poids correspondant, puis on additionne : cela donne <em>une</em> valeur de la sortie. Les valeurs de l’entrée et du masque sont modifiables.</p>
+</header>
+
+<div class="stack">
+  <section class="card stack">
+    <div class="controls" id="opts"></div>
+    <div id="bar"></div>
+  </section>
+
+  <section class="card">
+    <div class="stage" id="stage"></div>
+    <p class="small muted" style="text-align:center;margin:8px 0 0">Cliquez sur une case de la sortie pour y placer le masque · <kbd>←</kbd> <kbd>→</kbd> pour avancer · <kbd>Espace</kbd> lecture/pause</p>
+  </section>
+
+  <section class="card" id="calc">
+    <h2 id="calcTitle">Calcul</h2>
+    <div class="formula" id="formula"></div>
+  </section>
+
+  <section class="card stack">
+    <h2>À retenir</h2>
+    <div class="note">Taille de sortie (pas = 1, sans remplissage) : <span class="mono">N − F + 1</span>. Ici <span class="mono" id="sizeTxt"></span>.</div>
+    <div class="note">En traitement d’images, la « vraie » convolution retourne le masque de 180° avant de l’appliquer. Les CNN (Keras, PyTorch) appliquent le masque <strong>sans le retourner</strong> : c’est une corrélation croisée, mais on l’appelle quand même convolution. Pour un masque symétrique (moyenneur, Laplacien), les deux sont identiques. Comme les poids d’un CNN sont appris, la différence n’a aucune importance pratique.</div>
+    <div class="note warn">Le <strong>moyenneur</strong> lisse l’image, <strong>Sobel</strong> répond aux variations d’intensité (bords verticaux pour Sobel X, horizontaux pour Sobel Y), le <strong>Laplacien</strong> répond aux variations rapides dans toutes les directions et le filtre de <strong>netteté</strong> accentue les détails.</div>
+  </section>
+</div>
+<footer><span>Deep Learning · Réseaux convolutifs – principes de base</span><a href="index.html">Toutes les animations →</a></footer>
+</div>
+<script>
+// ---- utilitaires communs ----
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+function h(tag, attrs = {}, ...kids) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs || {})) {
+    if (k === 'class') e.className = v;
+    else if (k === 'style' && v && typeof v === 'object') { for (const [sk, sv] of Object.entries(v)) { if (sv == null) continue; sk.startsWith('--') ? e.style.setProperty(sk, sv) : (e.style[sk] = sv); } }
+    else if (k.startsWith('on')) e.addEventListener(k.slice(2), v);
+    else if (k === 'html') e.innerHTML = v;
+    else if (v !== false && v != null) e.setAttribute(k, v);
+  }
+  for (const c of kids.flat()) if (c != null) e.append(c.nodeType ? c : document.createTextNode(c));
+  return e;
+}
+// nombres au format français (virgule décimale, signe moins typographique)
+function fmt(x, d = 2) {
+  if (!isFinite(x)) return '—';
+  let s = (Math.round(x * 10 ** d) / 10 ** d).toString();
+  if (Object.is(Math.round(x * 10 ** d), -0) || s === '-0') s = '0';
+  return s.replace('.', ',').replace('-', '−');
+}
+function fmtInt(n) { return Math.round(n).toLocaleString('fr-CA').replace(/ | /g, ' '); }
+function par(x) { return x < 0 ? '(' + fmt(x) + ')' : fmt(x); }
+const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
+// couleur divergente (négatif → rouge, positif → bleu)
+function divColor(v, m) {
+  if (!m) return 'var(--zero)';
+  const t = clamp(Math.abs(v) / m, 0, 1);
+  return `color-mix(in oklab, ${v < 0 ? 'var(--neg)' : 'var(--pos)'} ${Math.round(t * 70)}%, var(--zero))`;
+}
+function seqColor(v, m, c = 'var(--accent)', top = 75) {
+  const t = m ? clamp(v / m, 0, 1) : 0;
+  return `color-mix(in oklab, ${c} ${Math.round(t * top)}%, var(--zero))`;
+}
+// générateur pseudo-aléatoire reproductible
+function rng(seed = 1) { let s = seed >>> 0; return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296); }
+// lecteur pas à pas (lecture / pause / vitesse)
+class Player {
+  constructor({ n, onStep, speed = 900 }) { this.n = n; this.i = 0; this.onStep = onStep; this.speed = speed; this.t = null; }
+  go(i) { this.i = ((i % this.n) + this.n) % this.n; this.onStep(this.i); }
+  next() { this.go(this.i + 1); } prev() { this.go(this.i - 1); }
+  play() { this.stop(); this.t = setInterval(() => this.next(), this.speed); this.playing = true; }
+  stop() { clearInterval(this.t); this.t = null; this.playing = false; }
+  toggle() { this.playing ? this.stop() : this.play(); return this.playing; }
+  setSpeed(ms) { this.speed = ms; if (this.playing) this.play(); }
+}
+// barre de contrôle standard pour un Player
+function playerBar(p, { extra = [] } = {}) {
+  const play = h('button', { class: 'btn primary', onclick: () => { play.textContent = p.toggle() ? '❚❚ Pause' : '▶ Lecture'; } }, '▶ Lecture');
+  const sp = h('input', { type: 'range', min: 150, max: 2000, step: 50, value: 2150 - p.speed, oninput: e => p.setSpeed(2150 - +e.target.value), 'aria-label': 'Vitesse' });
+  const bar = h('div', { class: 'controls' },
+    h('button', { class: 'btn', onclick: () => { p.stop(); play.textContent = '▶ Lecture'; p.prev(); } }, '◀ Précédent'),
+    play,
+    h('button', { class: 'btn', onclick: () => { p.stop(); play.textContent = '▶ Lecture'; p.next(); } }, 'Suivant ▶'),
+    h('label', { class: 'ctl' }, h('span', {}, 'Vitesse'), sp), ...extra);
+  bar.stopUI = () => { p.stop(); play.textContent = '▶ Lecture'; };
+  return bar;
+}
+// contrôle curseur avec étiquette et valeur
+function slider({ label, min, max, step = 1, value, onInput, fmtv = v => v, width }) {
+  const out = h('b', {}, fmtv(value));
+  const inp = h('input', { type: 'range', min, max, step, value, style: width ? { width } : null });
+  inp.addEventListener('input', () => { out.textContent = fmtv(+inp.value); onInput(+inp.value); });
+  const w = h('label', { class: 'ctl' }, h('span', { class: 'lab' }, h('span', {}, label), out), inp);
+  w.input = inp; w.set = v => { inp.value = v; out.textContent = fmtv(+v); };
+  return w;
+}
+function segmented(options, value, onChange) {
+  const s = h('div', { class: 'seg', role: 'group' });
+  const btns = options.map(([v, l]) => h('button', { class: v === value ? 'on' : '', onclick: () => { btns.forEach(b => b.classList.remove('on')); b2[v].classList.add('on'); onChange(v); } }, l));
+  const b2 = {}; options.forEach(([v], i) => b2[v] = btns[i]);
+  s.append(...btns); s.set = v => { btns.forEach(b => b.classList.remove('on')); b2[v] && b2[v].classList.add('on'); };
+  return s;
+}
+// matrice de cellules ; retourne {el, cells[r][c]}
+function matrix(rows, cols, { cs = 40, gap = 3, cls = '' } = {}) {
+  const el = h('div', { class: 'mat ' + cls, style: { gridTemplateColumns: `repeat(${cols}, var(--cs))`, '--cs': cs + 'px', gap: gap + 'px' } });
+  const cells = [];
+  for (let r = 0; r < rows; r++) { cells.push([]); for (let c = 0; c < cols; c++) { const d = h('div', { class: 'cell' }); el.append(d); cells[r].push(d); } }
+  return { el, cells };
+}
+
+const SLIDE = [[1,1,2,5,6],[2,3,4,6,7],[8,7,6,5,7],[2,3,5,6,7],[4,5,3,2,1]];
+const KERNELS = {
+  moy:   {name:'Moyenneur (1/9)', w:[[1,1,1],[1,1,1],[1,1,1]], f:1/9, ftxt:'1/9'},
+  sobx:  {name:'Sobel X', w:[[-1,0,1],[-2,0,2],[-1,0,1]], f:1},
+  soby:  {name:'Sobel Y', w:[[-1,-2,-1],[0,0,0],[1,2,1]], f:1},
+  lap:   {name:'Laplacien', w:[[0,1,0],[1,-4,1],[0,1,0]], f:1},
+  sharp: {name:'Netteté', w:[[0,-1,0],[-1,5,-1],[0,-1,0]], f:1},
+  id:    {name:'Identité', w:[[0,0,0],[0,1,0],[0,0,0]], f:1},
+  perso: {name:'Personnalisé', w:[[1,0,-1],[1,0,-1],[1,0,-1]], f:1},
+};
+let X = SLIDE.map(r => r.slice()), kKey = 'moy', K = KERNELS.moy.w.map(r => r.slice()), fac = 1/9, showAll = false;
+let N = 5, M = 3;
+const out = () => { const o = []; for (let i = 0; i < M; i++) { o.push([]); for (let j = 0; j < M; j++) { let s = 0; for (let a = 0; a < 3; a++) for (let b = 0; b < 3; b++) s += X[i+a][j+b] * K[a][b]; o[i].push(s * fac); } } return o; };
+
+// --- options
+const sel = h('select', { onchange: e => setKernel(e.target.value) }, Object.entries(KERNELS).map(([k, v]) => h('option', { value: k }, v.name)));
+const sizeSel = h('select', { onchange: e => { N = +e.target.value; M = N - 2; randomize(); } }, [5, 6, 7].map(n => h('option', { value: n }, n + '×' + n)));
+const allBtn = h('button', { class: 'btn', onclick: () => { showAll = !showAll; allBtn.classList.toggle('on', showAll); render(); } }, 'Afficher toute la sortie');
+$('#opts').append(
+  h('label', { class: 'ctl' }, h('span', {}, 'Filtre'), sel),
+  h('label', { class: 'ctl' }, h('span', {}, 'Taille de l’entrée'), sizeSel),
+  h('button', { class: 'btn', onclick: () => { N = 5; M = 3; sizeSel.value = 5; X = SLIDE.map(r => r.slice()); build(); } }, 'Valeurs des diapos'),
+  h('button', { class: 'btn', onclick: randomize }, '🎲 Valeurs aléatoires'),
+  allBtn);
+function randomize() { const R = rng(Date.now()); X = Array.from({ length: N }, () => Array.from({ length: N }, () => Math.floor(R() * 10))); build(); }
+function setKernel(k) { kKey = k; sel.value = k; K = KERNELS[k].w.map(r => r.slice()); fac = KERNELS[k].f; build(); }
+
+const player = new Player({ n: M * M, onStep: render, speed: 1100 });
+const bar = playerBar(player); $('#bar').append(bar);
+
+let inC, kC, oC, facEl;
+function build() {
+  player.n = M * M; player.i = Math.min(player.i, M * M - 1);
+  const cs = innerWidth < 640 ? 34 : 46;
+  const st = $('#stage'); st.innerHTML = '';
+  const inM = matrix(N, N, { cs }); inC = inM.cells;
+  inC.forEach((r, i) => r.forEach((c, j) => {
+    const inp = h('input', { type: 'text', inputmode: 'numeric', value: X[i][j], 'aria-label': `x[${i},${j}]` });
+    inp.addEventListener('input', () => { const v = parseFloat(inp.value.replace(',', '.')); if (!isNaN(v)) { X[i][j] = v; render(); } });
+    c.append(inp, h('span', { class: 'w' }));
+  }));
+  const kM = matrix(3, 3, { cs }); kC = kM.cells;
+  kC.forEach((r, a) => r.forEach((c, b) => {
+    const inp = h('input', { type: 'text', inputmode: 'numeric', value: K[a][b], 'aria-label': `w[${a},${b}]` });
+    inp.addEventListener('input', () => { const v = parseFloat(inp.value.replace(',', '.').replace('−', '-')); if (!isNaN(v)) { K[a][b] = v; if (kKey !== 'perso') { kKey = 'perso'; sel.value = 'perso'; fac = 1; facEl.textContent = ''; KERNELS.perso.w = K; } render(); } });
+    c.append(inp); c.style.background = 'var(--hl-soft)';
+  }));
+  facEl = h('div', { class: 'kfac' }, fac !== 1 ? '× ' + KERNELS[kKey].ftxt : '');
+  const oM = matrix(M, M, { cs }); oC = oM.cells;
+  oC.forEach((r, i) => r.forEach((c, j) => { c.classList.add('clickable'); c.addEventListener('click', () => { bar.stopUI(); player.go(i * M + j); }); }));
+  st.append(
+    h('div', {}, h('div', { class: 'mlabel' }, `ENTRÉE ${N}×${N}`), inM.el),
+    h('div', { class: 'op' }, '∗'),
+    h('div', {}, h('div', { class: 'mlabel' }, 'MASQUE 3×3'), kM.el, facEl),
+    h('div', { class: 'op' }, '='),
+    h('div', {}, h('div', { class: 'mlabel' }, `SORTIE ${M}×${M}`), oM.el));
+  $('#sizeTxt').textContent = `${N} − 3 + 1 = ${M}, donc une sortie ${M}×${M}`;
+  render(player.i);
+}
+function render(step = player.i) {
+  const O = out(), pi = Math.floor(step / M), pj = step % M;
+  const mx = Math.max(...O.flat().map(Math.abs), 1e-9), mxIn = Math.max(...X.flat().map(Math.abs), 1e-9);
+  inC.forEach((r, i) => r.forEach((c, j) => {
+    const inWin = i >= pi && i < pi + 3 && j >= pj && j < pj + 3;
+    c.classList.toggle('win', inWin);
+    c.style.background = seqColor(Math.abs(X[i][j]), mxIn, 'var(--muted)', 45);
+    c.querySelector('.w').textContent = inWin ? fmt(K[i - pi][j - pj]) : '';
+  }));
+  oC.forEach((r, i) => r.forEach((c, j) => {
+    const k = i * M + j, done = showAll || k <= step;
+    c.textContent = done ? fmt(O[i][j], Math.abs(O[i][j]) >= 100 ? 0 : 2) : '·';
+    c.style.background = done ? divColor(O[i][j], mx) : 'var(--zero)';
+    c.classList.toggle('cur', k === step);
+  }));
+  // calcul détaillé
+  $('#calcTitle').textContent = `Calcul de la sortie en position (${pi}, ${pj})`;
+  const terms = []; let s = 0;
+  for (let a = 0; a < 3; a++) for (let b = 0; b < 3; b++) { const p = X[pi + a][pj + b] * K[a][b]; s += p; terms.push(`<span class="t">${par(X[pi + a][pj + b])}×${par(K[a][b])}</span>`); }
+  let html = `<div class="terms">${terms.join(' + ')}</div><div>= ${fmt(s)}`;
+  if (fac !== 1) html += ` &nbsp;→&nbsp; ${fmt(s)} × ${KERNELS[kKey].ftxt} = <span class="res">${fmt(s * fac)}</span>`;
+  else html = html.replace(/= ([^<]*)$/, '= <span class="res">$1</span>');
+  $('#formula').innerHTML = html + '</div>';
+}
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+  if (e.key === 'ArrowRight') { bar.stopUI(); player.next(); }
+  if (e.key === 'ArrowLeft') { bar.stopUI(); player.prev(); }
+  if (e.key === ' ') { e.preventDefault(); bar.querySelector('.primary').click(); }
+});
+build();
+</script>
+</body>
+</html>

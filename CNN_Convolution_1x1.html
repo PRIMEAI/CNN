@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f4ee;--panel:#ffffff;--ink:#1c1b19;--muted:#6b675f;--line:#e2ddd2;--soft:#efebe2;
+  --accent:#0f6e66;--accent-ink:#ffffff;--accent-soft:#d8ecea;--hl:#e09a2d;--hl-soft:#fbe8c6;
+  --pos:#2a6fdb;--neg:#d2453b;--zero:#f4f2ec;--r:#d2453b;--g:#2f9e57;--b:#2a6fdb;
+  --shadow:0 1px 2px rgba(30,25,15,.06),0 4px 16px rgba(30,25,15,.05);
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#151513;--panel:#1e1d1a;--ink:#ece9e2;--muted:#a19b8f;--line:#35322c;--soft:#272520;
+  --accent:#4fb5aa;--accent-ink:#0d1f1d;--accent-soft:#1b3b38;--hl:#f0b456;--hl-soft:#41321a;
+  --pos:#6ea3ff;--neg:#ff7d72;--zero:#25231f;--r:#ff7d72;--g:#5cc97f;--b:#6ea3ff;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.25);}}
+:root[data-theme="dark"]{
+  --bg:#151513;--panel:#1e1d1a;--ink:#ece9e2;--muted:#a19b8f;--line:#35322c;--soft:#272520;
+  --accent:#4fb5aa;--accent-ink:#0d1f1d;--accent-soft:#1b3b38;--hl:#f0b456;--hl-soft:#41321a;
+  --pos:#6ea3ff;--neg:#ff7d72;--zero:#25231f;--r:#ff7d72;--g:#5cc97f;--b:#6ea3ff;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.25);}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 var(--sans);}
+.wrap{max-width:1180px;margin:0 auto;padding:28px 16px 48px}
+header.top{margin-bottom:22px}
+.eyebrow{font:500 12px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.eyebrow a{color:var(--muted);text-decoration:none}.eyebrow a:hover{color:var(--accent)}
+h1{font-size:clamp(26px,4vw,36px);line-height:1.15;margin:8px 0 10px;letter-spacing:-.01em;font-weight:600}
+h2{font-size:19px;margin:0 0 12px;font-weight:600}
+h3{font-size:15px;margin:0 0 8px;font-weight:600}
+.lead{max-width:760px;color:var(--muted);margin:0;font-size:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow)}
+.stack{display:flex;flex-direction:column;gap:16px}
+.row{display:flex;gap:16px;flex-wrap:wrap}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.mono{font-family:var(--mono)}
+.controls{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center}
+.ctl{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--muted);min-width:0}
+.ctl b{color:var(--ink);font:600 13px var(--mono)}
+.ctl .lab{display:flex;justify-content:space-between;gap:10px}
+select,input[type=number],input[type=text]{font:14px var(--sans);color:var(--ink);background:var(--soft);border:1px solid var(--line);border-radius:8px;padding:6px 8px;min-height:34px}
+input[type=number]{width:72px;font-family:var(--mono)}
+input[type=range]{accent-color:var(--accent);width:150px}
+.btn{font:500 14px var(--sans);color:var(--ink);background:var(--soft);border:1px solid var(--line);border-radius:9px;padding:7px 13px;cursor:pointer;min-height:36px;display:inline-flex;align-items:center;gap:6px;transition:background .15s,border-color .15s}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.on{background:var(--accent-soft);border-color:var(--accent);color:var(--ink)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.seg button{font:500 13px var(--sans);background:var(--soft);color:var(--ink);border:0;padding:7px 12px;cursor:pointer;min-height:34px}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button.on{background:var(--accent);color:var(--accent-ink)}
+.mat{display:inline-grid;gap:3px;font-family:var(--mono)}
+.cell{width:var(--cs,40px);height:var(--cs,40px);display:flex;align-items:center;justify-content:center;border-radius:6px;background:var(--zero);font-size:calc(var(--cs,40px)*.36);position:relative;border:1.5px solid transparent;transition:background .2s,border-color .15s,box-shadow .15s;color:var(--ink);user-select:none}
+.cell.pad{background:transparent;border:1.5px dashed var(--line);color:var(--muted)}
+.cell.win{border-color:var(--hl);box-shadow:0 0 0 2px var(--hl-soft)}
+.cell.cur{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.cell.dim{opacity:.35}
+.cell .w{position:absolute;right:3px;bottom:1px;font-size:calc(var(--cs,40px)*.24);color:var(--hl);font-weight:600}
+.cell input{width:100%;height:100%;border:0;background:transparent;text-align:center;font:inherit;color:inherit;padding:0}
+.cell input:focus{outline:2px solid var(--accent);border-radius:6px}
+.mlabel{font:600 12px var(--mono);color:var(--muted);margin-bottom:6px;letter-spacing:.03em}
+.formula{font-family:var(--mono);font-size:14px;background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:12px 14px;overflow-x:auto;line-height:1.8}
+.formula .t{display:inline-block;padding:0 5px;border-radius:5px;background:var(--panel);border:1px solid var(--line);margin:2px 1px}
+.formula .res{color:var(--accent);font-weight:600}
+.pill{display:inline-flex;align-items:center;gap:6px;font:600 12px var(--mono);padding:3px 9px;border-radius:999px;background:var(--accent-soft);color:var(--ink)}
+.pill.warn{background:var(--hl-soft)}
+.pill.bad{background:color-mix(in oklab,var(--neg) 22%,transparent)}
+.note{border-left:3px solid var(--accent);padding:8px 12px;background:var(--soft);border-radius:0 8px 8px 0;font-size:14px}
+.note.warn{border-color:var(--hl)}
+.note.bad{border-color:var(--neg)}
+.kpis{display:flex;gap:10px;flex-wrap:wrap}
+.kpi{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:130px}
+.kpi .v{font:600 22px var(--mono);color:var(--ink)}
+.kpi .k{font-size:12px;color:var(--muted)}
+.op{font:600 22px var(--mono);color:var(--muted);align-self:center;padding:0 4px}
+.scrollx{overflow-x:auto;max-width:100%}
+footer{margin-top:36px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:14px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer a{color:var(--accent)}
+svg text{font-family:var(--sans)}
+kbd{font:12px var(--mono);background:var(--soft);border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:1px 5px}
+@media (max-width:640px){.wrap{padding:20px 16px 40px}.card{padding:14px}input[type=range]{width:120px}}
+</style>
+<title>CNN – Convolution 1×1</title>
+<style>
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+@media (max-width:900px){.grid2{grid-template-columns:1fr}}
+#vol svg{width:100%;height:auto;display:block}
+#mv{width:100%;max-width:560px;height:auto;display:block;margin:0 auto;cursor:crosshair}
+.barrow{display:grid;grid-template-columns:190px 1fr 110px;gap:8px;align-items:center;font-size:13px;margin:6px 0}
+.barrow .b{height:18px;border-radius:5px;background:var(--hl)}
+.barrow .b.alt{background:var(--accent)}
+.barrow span:last-child{font-family:var(--mono);text-align:right}
+@media (max-width:640px){.barrow{grid-template-columns:120px 1fr 90px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <div class="eyebrow"><span>Réseaux convolutifs · Diapos 104–107</span><a href="index.html">← Toutes les animations</a></div>
+  <h1>Convolution 1×1 et « bottleneck »</h1>
+  <p class="lead">Un filtre 1×1 ne regarde qu’<strong>un seul pixel</strong>, mais sur <strong>toute la profondeur</strong> : c’est un produit scalaire entre la « colonne » de C valeurs de ce pixel et les C poids du filtre. Avec K filtres, chaque pixel passe d’un vecteur de C valeurs à un vecteur de K valeurs : la taille spatiale ne change pas, seule la profondeur change.</p>
+</header>
+<div class="stack">
+  <section class="card stack">
+    <div class="controls" id="ctl"></div>
+    <div id="bar"></div>
+    <div class="grid2">
+      <div><div class="mlabel" id="volTitle"></div><div id="vol"></div></div>
+      <div>
+        <div class="mlabel">À CHAQUE PIXEL : y = W · x + b</div>
+        <canvas id="mv" width="560" height="250"></canvas>
+        <p class="small muted" style="margin:6px 0 0;text-align:center">Survolez une ligne de W : chaque ligne est un filtre 1×1×C.</p>
+      </div>
+    </div>
+    <div class="formula" id="calc"></div>
+    <div class="kpis" id="kpis"></div>
+  </section>
+
+  <section class="card stack">
+    <h2>Le « bottleneck » : réduire la profondeur avant une convolution coûteuse</h2>
+    <p class="muted" style="margin:0">Au lieu d’appliquer directement une convolution 3×3 sur C canaux, on réduit d’abord à m canaux avec une conv. 1×1, on fait la conv. 3×3 sur m canaux, puis on revient à C canaux avec une autre conv. 1×1 (bloc bottleneck de ResNet).</p>
+    <div class="controls" id="ctl2"></div>
+    <div id="bneck"></div>
+  </section>
+
+  <section class="card stack">
+    <h2>À retenir</h2>
+    <div class="note">Conv. 1×1 avec K filtres sur un volume H×W×C : sortie H×W×K, <span class="mono">(C + 1)·K</span> paramètres. Exemple de la diapo : 56×56×64 → 56×56×32 avec 32 filtres 1×1×64.</div>
+    <div class="note">C’est l’équivalent d’une couche entièrement connectée (C → K) appliquée indépendamment à chaque pixel, avec les mêmes poids partout. Suivie d’une ReLU, elle ajoute aussi une non-linéarité.</div>
+  </section>
+</div>
+<footer><span>Deep Learning · Réseaux convolutifs – principes de base</span><a href="index.html">Toutes les animations →</a></footer>
+</div>
+<script>
+// ---- utilitaires communs ----
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+function h(tag, attrs = {}, ...kids) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs || {})) {
+    if (k === 'class') e.className = v;
+    else if (k === 'style' && v && typeof v === 'object') { for (const [sk, sv] of Object.entries(v)) { if (sv == null) continue; sk.startsWith('--') ? e.style.setProperty(sk, sv) : (e.style[sk] = sv); } }
+    else if (k.startsWith('on')) e.addEventListener(k.slice(2), v);
+    else if (k === 'html') e.innerHTML = v;
+    else if (v !== false && v != null) e.setAttribute(k, v);
+  }
+  for (const c of kids.flat()) if (c != null) e.append(c.nodeType ? c : document.createTextNode(c));
+  return e;
+}
+// nombres au format français (virgule décimale, signe moins typographique)
+function fmt(x, d = 2) {
+  if (!isFinite(x)) return '—';
+  let s = (Math.round(x * 10 ** d) / 10 ** d).toString();
+  if (Object.is(Math.round(x * 10 ** d), -0) || s === '-0') s = '0';
+  return s.replace('.', ',').replace('-', '−');
+}
+function fmtInt(n) { return Math.round(n).toLocaleString('fr-CA').replace(/ | /g, ' '); }
+function par(x) { return x < 0 ? '(' + fmt(x) + ')' : fmt(x); }
+const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
+// couleur divergente (négatif → rouge, positif → bleu)
+function divColor(v, m) {
+  if (!m) return 'var(--zero)';
+  const t = clamp(Math.abs(v) / m, 0, 1);
+  return `color-mix(in oklab, ${v < 0 ? 'var(--neg)' : 'var(--pos)'} ${Math.round(t * 70)}%, var(--zero))`;
+}
+function seqColor(v, m, c = 'var(--accent)', top = 75) {
+  const t = m ? clamp(v / m, 0, 1) : 0;
+  return `color-mix(in oklab, ${c} ${Math.round(t * top)}%, var(--zero))`;
+}
+// générateur pseudo-aléatoire reproductible
+function rng(seed = 1) { let s = seed >>> 0; return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296); }
+// lecteur pas à pas (lecture / pause / vitesse)
+class Player {
+  constructor({ n, onStep, speed = 900 }) { this.n = n; this.i = 0; this.onStep = onStep; this.speed = speed; this.t = null; }
+  go(i) { this.i = ((i % this.n) + this.n) % this.n; this.onStep(this.i); }
+  next() { this.go(this.i + 1); } prev() { this.go(this.i - 1); }
+  play() { this.stop(); this.t = setInterval(() => this.next(), this.speed); this.playing = true; }
+  stop() { clearInterval(this.t); this.t = null; this.playing = false; }
+  toggle() { this.playing ? this.stop() : this.play(); return this.playing; }
+  setSpeed(ms) { this.speed = ms; if (this.playing) this.play(); }
+}
+// barre de contrôle standard pour un Player
+function playerBar(p, { extra = [] } = {}) {
+  const play = h('button', { class: 'btn primary', onclick: () => { play.textContent = p.toggle() ? '❚❚ Pause' : '▶ Lecture'; } }, '▶ Lecture');
+  const sp = h('input', { type: 'range', min: 150, max: 2000, step: 50, value: 2150 - p.speed, oninput: e => p.setSpeed(2150 - +e.target.value), 'aria-label': 'Vitesse' });
+  const bar = h('div', { class: 'controls' },
+    h('button', { class: 'btn', onclick: () => { p.stop(); play.textContent = '▶ Lecture'; p.prev(); } }, '◀ Précédent'),
+    play,
+    h('button', { class: 'btn', onclick: () => { p.stop(); play.textContent = '▶ Lecture'; p.next(); } }, 'Suivant ▶'),
+    h('label', { class: 'ctl' }, h('span', {}, 'Vitesse'), sp), ...extra);
+  bar.stopUI = () => { p.stop(); play.textContent = '▶ Lecture'; };
+  return bar;
+}
+// contrôle curseur avec étiquette et valeur
+function slider({ label, min, max, step = 1, value, onInput, fmtv = v => v, width }) {
+  const out = h('b', {}, fmtv(value));
+  const inp = h('input', { type: 'range', min, max, step, value, style: width ? { width } : null });
+  inp.addEventListener('input', () => { out.textContent = fmtv(+inp.value); onInput(+inp.value); });
+  const w = h('label', { class: 'ctl' }, h('span', { class: 'lab' }, h('span', {}, label), out), inp);
+  w.input = inp; w.set = v => { inp.value = v; out.textContent = fmtv(+v); };
+  return w;
+}
+function segmented(options, value, onChange) {
+  const s = h('div', { class: 'seg', role: 'group' });
+  const btns = options.map(([v, l]) => h('button', { class: v === value ? 'on' : '', onclick: () => { btns.forEach(b => b.classList.remove('on')); b2[v].classList.add('on'); onChange(v); } }, l));
+  const b2 = {}; options.forEach(([v], i) => b2[v] = btns[i]);
+  s.append(...btns); s.set = v => { btns.forEach(b => b.classList.remove('on')); b2[v] && b2[v].classList.add('on'); };
+  return s;
+}
+// matrice de cellules ; retourne {el, cells[r][c]}
+function matrix(rows, cols, { cs = 40, gap = 3, cls = '' } = {}) {
+  const el = h('div', { class: 'mat ' + cls, style: { gridTemplateColumns: `repeat(${cols}, var(--cs))`, '--cs': cs + 'px', gap: gap + 'px' } });
+  const cells = [];
+  for (let r = 0; r < rows; r++) { cells.push([]); for (let c = 0; c < cols; c++) { const d = h('div', { class: 'cell' }); el.append(d); cells[r].push(d); } }
+  return { el, cells };
+}
+
+let Cin = 64, Cout = 32, Hs = 56, kSel = 0, Wm, bv;
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+function genW() { const R = rng(11); Wm = Array.from({ length: Cout }, () => Array.from({ length: Cin }, () => (R() * 2 - 1))); bv = Array.from({ length: Cout }, () => (R() - .5) * .4); }
+const xAt = pos => { const R = rng(1000 + pos); return Array.from({ length: Cin }, () => R() * 2 - 1); };
+$('#ctl').append(
+  slider({ label: 'Canaux d’entrée C', min: 4, max: 256, step: 4, value: Cin, onInput: v => { Cin = v; genW(); render(player.i); } }),
+  slider({ label: 'Filtres 1×1 K (canaux de sortie)', min: 4, max: 256, step: 4, value: Cout, onInput: v => { Cout = v; kSel = Math.min(kSel, Cout - 1); genW(); render(player.i); } }),
+  slider({ label: 'Taille spatiale H = W', min: 7, max: 112, step: 7, value: Hs, onInput: v => { Hs = v; render(player.i); } }));
+const GRID = 8; // trajectoire grossière : 8×8 positions représentatives
+const player = new Player({ n: GRID * GRID, onStep: render, speed: 600 });
+$('#bar').append(playerBar(player));
+function iso(x, y, w, hh, d, ang = -0.6) { // boîte en perspective cavalière
+  const dx = d * Math.cos(ang), dy = d * Math.sin(ang);
+  const p = (pts, f, s, o = 1) => `<polygon points="${pts.map(q => q.join(',')).join(' ')}" fill="${f}" fill-opacity="${o}" stroke="${s}" stroke-width="1.2"/>`;
+  return { dx, dy, svg: p([[x, y], [x + w, y], [x + w + dx, y + dy], [x + dx, y + dy]], 'var(--soft)', 'var(--muted)') +
+    p([[x + w, y], [x + w + dx, y + dy], [x + w + dx, y + hh + dy], [x + w, y + hh]], 'var(--line)', 'var(--muted)') +
+    p([[x, y], [x + w, y], [x + w, y + hh], [x, y + hh]], 'var(--panel)', 'var(--muted)') };
+}
+function render(step) {
+  const r = Math.floor(step / GRID), c = step % GRID;
+  const pr = Math.round((r + .5) * Hs / GRID - .5), pc = Math.round((c + .5) * Hs / GRID - .5), pos = pr * Hs + pc;
+  // --- volumes
+  const S = 150, u = S / Hs, dIn = Math.min(120, 20 + Cin * .45), dOut = Math.min(120, 20 + Cout * .45);
+  const y0 = 110, x1 = 10, x2 = x1 + S + dIn * Math.cos(.6) + 86;
+  const A = iso(x1, y0, S, S, dIn), B = iso(x2, y0, S, S, dOut);
+  const col = (x, a, d) => { const px = x + (pc + .5) * u, py = y0 + (pr + .5) * u; return `<line x1="${px}" y1="${py}" x2="${px + a.dx}" y2="${py + a.dy}" stroke="${d}" stroke-width="5" stroke-linecap="round"/><circle cx="${px}" cy="${py}" r="4" fill="${d}"/>`; };
+  const g = (x) => { let s = ''; for (let i = 1; i < GRID; i++) { const t = i * S / GRID; s += `<line x1="${x + t}" y1="${y0}" x2="${x + t}" y2="${y0 + S}" stroke="var(--line)"/><line x1="${x}" y1="${y0 + t}" x2="${x + S}" y2="${y0 + t}" stroke="var(--line)"/>`; } return s; };
+  $('#vol').innerHTML = `<svg viewBox="0 0 ${x2 + S + B.dx + 60} ${y0 + S + 40}">
+    ${A.svg}${g(x1)}${col(x1, A, 'var(--hl)')}${B.svg}${g(x2)}${col(x2, B, 'var(--accent)')}
+    <text x="${x1 + S / 2}" y="${y0 + S + 22}" text-anchor="middle" font-size="13" fill="var(--ink)" font-weight="600">${Hs}×${Hs}×${Cin}</text>
+    <text x="${x2 + S / 2}" y="${y0 + S + 22}" text-anchor="middle" font-size="13" fill="var(--ink)" font-weight="600">${Hs}×${Hs}×${Cout}</text>
+    <text x="${x1 + S + A.dx + 8}" y="${y0 + S / 2 + 10}" font-size="12" fill="var(--muted)">conv 1×1</text>
+    <text x="${x1 + S + A.dx + 8}" y="${y0 + S / 2 + 26}" font-size="12" fill="var(--muted)">${Cout} filtres →</text>
+    <text x="${x1 + S + A.dx + 4}" y="${y0 + A.dy - 4}" font-size="11" fill="var(--muted)">C = ${Cin}</text>
+    <text x="${x2 + S + B.dx + 4}" y="${y0 + B.dy - 4}" font-size="11" fill="var(--muted)">K = ${Cout}</text></svg>`;
+  $('#volTitle').textContent = `PIXEL (${pr}, ${pc}) · POSITION ${fmtInt(pos + 1)} / ${fmtInt(Hs * Hs)}`;
+  // --- produit matrice-vecteur
+  const x = xAt(pos), y = Wm.map((row, k) => row.reduce((s, w, i) => s + w * x[i], 0) + bv[k]);
+  drawMV(x, y); lastX = x; lastY = y; calc();
+  const prm = (Cin + 1) * Cout, mac = Hs * Hs * Cin * Cout;
+  $('#kpis').innerHTML = `<div class="kpi"><div class="v">${fmtInt(prm)}</div><div class="k">paramètres = (${Cin} + 1)·${Cout}</div></div><div class="kpi"><div class="v">${fmtInt(mac)}</div><div class="k">multiplications = ${Hs}²·${Cin}·${Cout}</div></div><div class="kpi"><div class="v">${fmtInt(Hs * Hs)}</div><div class="k">produits matrice-vecteur (un par pixel)</div></div>`;
+}
+let lastX, lastY, geo;
+function drawMV(x, y) {
+  const cv = $('#mv'), ctx = cv.getContext('2d'), Wd = cv.width, Hd = cv.height;
+  ctx.clearRect(0, 0, Wd, Hd);
+  const top = 26, hh = Hd - top - 10, mw = Math.min(300, Wd - 200), cw = mw / Cin, rh = hh / Cout, xh = hh / Cin;
+  const X0 = 10, X1 = X0 + mw + 34, X2 = X1 + 26 + 40;
+  geo = { top, rh, X0, mw };
+  const pos = css('--pos'), neg = css('--neg'), ink = css('--ink'), mut = css('--muted'), hl = css('--hl'), acc = css('--accent');
+  const col = (v, m) => { const t = Math.max(-1, Math.min(1, v / m)); ctx.fillStyle = t >= 0 ? pos : neg; ctx.globalAlpha = .12 + .88 * Math.abs(t); };
+  for (let k = 0; k < Cout; k++) for (let i = 0; i < Cin; i++) { col(Wm[k][i], 1); ctx.fillRect(X0 + i * cw, top + k * rh, Math.ceil(cw), Math.ceil(rh)); }
+  for (let i = 0; i < Cin; i++) { col(x[i], 1); ctx.fillRect(X1, top + i * xh, 22, Math.ceil(xh)); }
+  const my = Math.max(...y.map(Math.abs));
+  for (let k = 0; k < Cout; k++) { col(y[k], my); ctx.fillRect(X2, top + k * rh, 22, Math.ceil(rh)); }
+  ctx.globalAlpha = 1; ctx.lineWidth = 2;
+  ctx.strokeStyle = hl; ctx.strokeRect(X0, top + kSel * rh, mw, rh); ctx.strokeStyle = acc; ctx.strokeRect(X2, top + kSel * rh, 22, rh);
+  ctx.strokeStyle = hl; ctx.strokeRect(X1, top, 22, hh);
+  ctx.fillStyle = mut; ctx.font = '600 12px IBM Plex Mono, monospace'; ctx.textAlign = 'center';
+  ctx.fillText(`W  (${Cout}×${Cin})`, X0 + mw / 2, 16); ctx.fillText('x', X1 + 11, 16); ctx.fillText('y', X2 + 11, 16);
+  ctx.fillText(`(${Cin})`, X1 + 11, Hd - 1 > top + hh + 9 ? top + hh + 9 : Hd - 1);
+  ctx.font = '600 20px IBM Plex Mono, monospace'; ctx.fillStyle = ink;
+  ctx.fillText('·', X0 + mw + 17, top + hh / 2 + 6); ctx.fillText('=', X2 - 20, top + hh / 2 + 6);
+}
+function calc() {
+  const t = []; for (let i = 0; i < Math.min(4, Cin); i++) t.push(`${par(Wm[kSel][i])}×${par(lastX[i])}`);
+  $('#calc').innerHTML = `Filtre ${kSel + 1} sur ${Cout} : y<sub>${kSel + 1}</sub> = ${t.join(' + ')} + … (${Cin} termes) + b = <span class="res">${fmt(lastY[kSel])}</span><br><span class="muted">Le même filtre (la même ligne de W) est appliqué aux ${fmtInt(Hs * Hs)} pixels.</span>`;
+}
+$('#mv').addEventListener('mousemove', e => {
+  const r = e.target.getBoundingClientRect(), y = (e.clientY - r.top) * e.target.height / r.height, x = (e.clientX - r.left) * e.target.width / r.width;
+  const k = Math.floor((y - geo.top) / geo.rh);
+  if (k >= 0 && k < Cout && x >= geo.X0 && x <= geo.X0 + geo.mw && k !== kSel) { kSel = k; drawMV(lastX, lastY); calc(); }
+});
+// --- bottleneck
+let BC = 256, Bm = 64, BH = 56;
+$('#ctl2').append(
+  slider({ label: 'Canaux C', min: 16, max: 512, step: 16, value: BC, onInput: v => { BC = v; bott(); } }),
+  slider({ label: 'Canaux réduits m', min: 4, max: 256, step: 4, value: Bm, onInput: v => { Bm = v; bott(); } }),
+  slider({ label: 'Taille spatiale', min: 7, max: 112, step: 7, value: BH, onInput: v => { BH = v; bott(); } }));
+function bott() {
+  const direct = 9 * BC * BC, b = BC * Bm + 9 * Bm * Bm + Bm * BC, hw = BH * BH, mx = Math.max(direct, b);
+  const row = (l, v, m, cls) => `<div class="barrow"><span>${l}</span><div class="b ${cls}" style="width:${Math.max(.5, 100 * v / m)}%"></div><span>${fmtInt(v)}</span></div>`;
+  $('#bneck').innerHTML = `
+    <div class="mlabel">POIDS (sans les biais)</div>
+    ${row(`Conv 3×3 directe ${BC}→${BC}`, direct, mx, '')}
+    ${row(`Bottleneck ${BC}→${Bm}→${Bm}→${BC}`, b, mx, 'alt')}
+    <div class="small muted">3·3·${BC}·${BC} = ${fmtInt(direct)} contre ${BC}·${Bm} + 3·3·${Bm}·${Bm} + ${Bm}·${BC} = ${fmtInt(b)} : <strong>${fmt(direct / b, 1)} fois</strong> moins de paramètres.</div>
+    <div class="mlabel" style="margin-top:12px">MULTIPLICATIONS (sortie ${BH}×${BH})</div>
+    ${row('Conv 3×3 directe', direct * hw, mx * hw, '')}
+    ${row('Bottleneck', b * hw, mx * hw, 'alt')}`;
+}
+genW(); render(0); bott();
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => drawMV(lastX, lastY));
+</script>
+</body>
+</html>

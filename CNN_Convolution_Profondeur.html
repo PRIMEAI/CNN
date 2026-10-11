@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f4ee;--panel:#ffffff;--ink:#1c1b19;--muted:#6b675f;--line:#e2ddd2;--soft:#efebe2;
+  --accent:#0f6e66;--accent-ink:#ffffff;--accent-soft:#d8ecea;--hl:#e09a2d;--hl-soft:#fbe8c6;
+  --pos:#2a6fdb;--neg:#d2453b;--zero:#f4f2ec;--r:#d2453b;--g:#2f9e57;--b:#2a6fdb;
+  --shadow:0 1px 2px rgba(30,25,15,.06),0 4px 16px rgba(30,25,15,.05);
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#151513;--panel:#1e1d1a;--ink:#ece9e2;--muted:#a19b8f;--line:#35322c;--soft:#272520;
+  --accent:#4fb5aa;--accent-ink:#0d1f1d;--accent-soft:#1b3b38;--hl:#f0b456;--hl-soft:#41321a;
+  --pos:#6ea3ff;--neg:#ff7d72;--zero:#25231f;--r:#ff7d72;--g:#5cc97f;--b:#6ea3ff;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.25);}}
+:root[data-theme="dark"]{
+  --bg:#151513;--panel:#1e1d1a;--ink:#ece9e2;--muted:#a19b8f;--line:#35322c;--soft:#272520;
+  --accent:#4fb5aa;--accent-ink:#0d1f1d;--accent-soft:#1b3b38;--hl:#f0b456;--hl-soft:#41321a;
+  --pos:#6ea3ff;--neg:#ff7d72;--zero:#25231f;--r:#ff7d72;--g:#5cc97f;--b:#6ea3ff;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.25);}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 var(--sans);}
+.wrap{max-width:1180px;margin:0 auto;padding:28px 16px 48px}
+header.top{margin-bottom:22px}
+.eyebrow{font:500 12px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.eyebrow a{color:var(--muted);text-decoration:none}.eyebrow a:hover{color:var(--accent)}
+h1{font-size:clamp(26px,4vw,36px);line-height:1.15;margin:8px 0 10px;letter-spacing:-.01em;font-weight:600}
+h2{font-size:19px;margin:0 0 12px;font-weight:600}
+h3{font-size:15px;margin:0 0 8px;font-weight:600}
+.lead{max-width:760px;color:var(--muted);margin:0;font-size:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow)}
+.stack{display:flex;flex-direction:column;gap:16px}
+.row{display:flex;gap:16px;flex-wrap:wrap}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.mono{font-family:var(--mono)}
+.controls{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center}
+.ctl{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--muted);min-width:0}
+.ctl b{color:var(--ink);font:600 13px var(--mono)}
+.ctl .lab{display:flex;justify-content:space-between;gap:10px}
+select,input[type=number],input[type=text]{font:14px var(--sans);color:var(--ink);background:var(--soft);border:1px solid var(--line);border-radius:8px;padding:6px 8px;min-height:34px}
+input[type=number]{width:72px;font-family:var(--mono)}
+input[type=range]{accent-color:var(--accent);width:150px}
+.btn{font:500 14px var(--sans);color:var(--ink);background:var(--soft);border:1px solid var(--line);border-radius:9px;padding:7px 13px;cursor:pointer;min-height:36px;display:inline-flex;align-items:center;gap:6px;transition:background .15s,border-color .15s}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.on{background:var(--accent-soft);border-color:var(--accent);color:var(--ink)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.seg button{font:500 13px var(--sans);background:var(--soft);color:var(--ink);border:0;padding:7px 12px;cursor:pointer;min-height:34px}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button.on{background:var(--accent);color:var(--accent-ink)}
+.mat{display:inline-grid;gap:3px;font-family:var(--mono)}
+.cell{width:var(--cs,40px);height:var(--cs,40px);display:flex;align-items:center;justify-content:center;border-radius:6px;background:var(--zero);font-size:calc(var(--cs,40px)*.36);position:relative;border:1.5px solid transparent;transition:background .2s,border-color .15s,box-shadow .15s;color:var(--ink);user-select:none}
+.cell.pad{background:transparent;border:1.5px dashed var(--line);color:var(--muted)}
+.cell.win{border-color:var(--hl);box-shadow:0 0 0 2px var(--hl-soft)}
+.cell.cur{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.cell.dim{opacity:.35}
+.cell .w{position:absolute;right:3px;bottom:1px;font-size:calc(var(--cs,40px)*.24);color:var(--hl);font-weight:600}
+.cell input{width:100%;height:100%;border:0;background:transparent;text-align:center;font:inherit;color:inherit;padding:0}
+.cell input:focus{outline:2px solid var(--accent);border-radius:6px}
+.mlabel{font:600 12px var(--mono);color:var(--muted);margin-bottom:6px;letter-spacing:.03em}
+.formula{font-family:var(--mono);font-size:14px;background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:12px 14px;overflow-x:auto;line-height:1.8}
+.formula .t{display:inline-block;padding:0 5px;border-radius:5px;background:var(--panel);border:1px solid var(--line);margin:2px 1px}
+.formula .res{color:var(--accent);font-weight:600}
+.pill{display:inline-flex;align-items:center;gap:6px;font:600 12px var(--mono);padding:3px 9px;border-radius:999px;background:var(--accent-soft);color:var(--ink)}
+.pill.warn{background:var(--hl-soft)}
+.pill.bad{background:color-mix(in oklab,var(--neg) 22%,transparent)}
+.note{border-left:3px solid var(--accent);padding:8px 12px;background:var(--soft);border-radius:0 8px 8px 0;font-size:14px}
+.note.warn{border-color:var(--hl)}
+.note.bad{border-color:var(--neg)}
+.kpis{display:flex;gap:10px;flex-wrap:wrap}
+.kpi{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:130px}
+.kpi .v{font:600 22px var(--mono);color:var(--ink)}
+.kpi .k{font-size:12px;color:var(--muted)}
+.op{font:600 22px var(--mono);color:var(--muted);align-self:center;padding:0 4px}
+.scrollx{overflow-x:auto;max-width:100%}
+footer{margin-top:36px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:14px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer a{color:var(--accent)}
+svg text{font-family:var(--sans)}
+kbd{font:12px var(--mono);background:var(--soft);border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:1px 5px}
+@media (max-width:640px){.wrap{padding:20px 16px 40px}.card{padding:14px}input[type=range]{width:120px}}
+</style>
+<title>CNN – Convolution en profondeur</title>
+<style>
+.cols{display:flex;gap:22px;flex-wrap:wrap;justify-content:center;align-items:flex-start}
+.col{display:flex;flex-direction:column;gap:10px;align-items:center;padding:12px;border-radius:12px;border:1.5px solid transparent;transition:border-color .2s,opacity .2s}
+.col.active{border-color:var(--accent);background:color-mix(in oklab,var(--accent-soft) 40%,transparent)}
+.col.idle{opacity:.45}
+.coltitle{font:600 13px var(--mono);text-align:center}
+.chlab{font:600 11px var(--mono);margin-bottom:3px}
+.bias{font:600 13px var(--mono);background:var(--hl-soft);border-radius:8px;padding:5px 10px}
+.calc-row{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.calc-row .k{min-width:84px;font-weight:600}
+.cell.clickable{cursor:pointer}.cell.clickable:hover{border-color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <div class="eyebrow"><span>Réseaux convolutifs · Diapos 28–38, 51</span><a href="index.html">← Toutes les animations</a></div>
+  <h1>Convolution en profondeur, plusieurs filtres</h1>
+  <p class="lead">L’entrée est un volume à 3 canaux (R, G, B). Chaque filtre a la <strong>même profondeur que l’entrée</strong> : chacune de ses tranches s’applique à son canal, on additionne les trois résultats et on ajoute le biais. Chaque filtre produit <strong>une carte d’activation</strong> ; avec K filtres, la sortie a une profondeur K. Inspiré de la démonstration de Stanford CS231n.</p>
+</header>
+<div class="stack">
+  <section class="card stack">
+    <div class="controls" id="opts"></div>
+    <div id="status"></div>
+    <div id="bar"></div>
+  </section>
+  <section class="card"><div class="scrollx"><div class="cols" id="stage"></div></div></section>
+  <section class="card"><h2 id="calcTitle">Calcul</h2><div class="formula" id="formula"></div></section>
+  <section class="card stack">
+    <h2>À retenir</h2>
+    <div class="kpis" id="kpis"></div>
+    <div class="note">Profondeur du filtre = profondeur de l’entrée (ici 3) · Nombre de filtres K = profondeur de la sortie.</div>
+    <div class="note">Taille de sortie : <span class="mono">(N − F + 2P) / S + 1</span>. Exemple CS231n : entrée 5×5×3, K = 2, F = 3, S = 2, P = 1 → (5 − 3 + 2)/2 + 1 = 3, soit une sortie 3×3×2.</div>
+  </section>
+</div>
+<footer><span>Deep Learning · Réseaux convolutifs – principes de base</span><a href="index.html">Toutes les animations →</a></footer>
+</div>
+<script>
+// ---- utilitaires communs ----
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+function h(tag, attrs = {}, ...kids) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs || {})) {
+    if (k === 'class') e.className = v;
+    else if (k === 'style' && v && typeof v === 'object') { for (const [sk, sv] of Object.entries(v)) { if (sv == null) continue; sk.startsWith('--') ? e.style.setProperty(sk, sv) : (e.style[sk] = sv); } }
+    else if (k.startsWith('on')) e.addEventListener(k.slice(2), v);
+    else if (k === 'html') e.innerHTML = v;
+    else if (v !== false && v != null) e.setAttribute(k, v);
+  }
+  for (const c of kids.flat()) if (c != null) e.append(c.nodeType ? c : document.createTextNode(c));
+  return e;
+}
+// nombres au format français (virgule décimale, signe moins typographique)
+function fmt(x, d = 2) {
+  if (!isFinite(x)) return '—';
+  let s = (Math.round(x * 10 ** d) / 10 ** d).toString();
+  if (Object.is(Math.round(x * 10 ** d), -0) || s === '-0') s = '0';
+  return s.replace('.', ',').replace('-', '−');
+}
+function fmtInt(n) { return Math.round(n).toLocaleString('fr-CA').replace(/ | /g, ' '); }
+function par(x) { return x < 0 ? '(' + fmt(x) + ')' : fmt(x); }
+const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
+// couleur divergente (négatif → rouge, positif → bleu)
+function divColor(v, m) {
+  if (!m) return 'var(--zero)';
+  const t = clamp(Math.abs(v) / m, 0, 1);
+  return `color-mix(in oklab, ${v < 0 ? 'var(--neg)' : 'var(--pos)'} ${Math.round(t * 70)}%, var(--zero))`;
+}
+function seqColor(v, m, c = 'var(--accent)', top = 75) {
+  const t = m ? clamp(v / m, 0, 1) : 0;
+  return `color-mix(in oklab, ${c} ${Math.round(t * top)}%, var(--zero))`;
+}
+// générateur pseudo-aléatoire reproductible
+function rng(seed = 1) { let s = seed >>> 0; return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296); }
+// lecteur pas à pas (lecture / pause / vitesse)
+class Player {
+  constructor({ n, onStep, speed = 900 }) { this.n = n; this.i = 0; this.onStep = onStep; this.speed = speed; this.t = null; }
+  go(i) { this.i = ((i % this.n) + this.n) % this.n; this.onStep(this.i); }
+  next() { this.go(this.i + 1); } prev() { this.go(this.i - 1); }
+  play() { this.stop(); this.t = setInterval(() => this.next(), this.speed); this.playing = true; }
+  stop() { clearInterval(this.t); this.t = null; this.playing = false; }
+  toggle() { this.playing ? this.stop() : this.play(); return this.playing; }
+  setSpeed(ms) { this.speed = ms; if (this.playing) this.play(); }
+}
+// barre de contrôle standard pour un Player
+function playerBar(p, { extra = [] } = {}) {
+  const play = h('button', { class: 'btn primary', onclick: () => { play.textContent = p.toggle() ? '❚❚ Pause' : '▶ Lecture'; } }, '▶ Lecture');
+  const sp = h('input', { type: 'range', min: 150, max: 2000, step: 50, value: 2150 - p.speed, oninput: e => p.setSpeed(2150 - +e.target.value), 'aria-label': 'Vitesse' });
+  const bar = h('div', { class: 'controls' },
+    h('button', { class: 'btn', onclick: () => { p.stop(); play.textContent = '▶ Lecture'; p.prev(); } }, '◀ Précédent'),
+    play,
+    h('button', { class: 'btn', onclick: () => { p.stop(); play.textContent = '▶ Lecture'; p.next(); } }, 'Suivant ▶'),
+    h('label', { class: 'ctl' }, h('span', {}, 'Vitesse'), sp), ...extra);
+  bar.stopUI = () => { p.stop(); play.textContent = '▶ Lecture'; };
+  return bar;
+}
+// contrôle curseur avec étiquette et valeur
+function slider({ label, min, max, step = 1, value, onInput, fmtv = v => v, width }) {
+  const out = h('b', {}, fmtv(value));
+  const inp = h('input', { type: 'range', min, max, step, value, style: width ? { width } : null });
+  inp.addEventListener('input', () => { out.textContent = fmtv(+inp.value); onInput(+inp.value); });
+  const w = h('label', { class: 'ctl' }, h('span', { class: 'lab' }, h('span', {}, label), out), inp);
+  w.input = inp; w.set = v => { inp.value = v; out.textContent = fmtv(+v); };
+  return w;
+}
+function segmented(options, value, onChange) {
+  const s = h('div', { class: 'seg', role: 'group' });
+  const btns = options.map(([v, l]) => h('button', { class: v === value ? 'on' : '', onclick: () => { btns.forEach(b => b.classList.remove('on')); b2[v].classList.add('on'); onChange(v); } }, l));
+  const b2 = {}; options.forEach(([v], i) => b2[v] = btns[i]);
+  s.append(...btns); s.set = v => { btns.forEach(b => b.classList.remove('on')); b2[v] && b2[v].classList.add('on'); };
+  return s;
+}
+// matrice de cellules ; retourne {el, cells[r][c]}
+function matrix(rows, cols, { cs = 40, gap = 3, cls = '' } = {}) {
+  const el = h('div', { class: 'mat ' + cls, style: { gridTemplateColumns: `repeat(${cols}, var(--cs))`, '--cs': cs + 'px', gap: gap + 'px' } });
+  const cells = [];
+  for (let r = 0; r < rows; r++) { cells.push([]); for (let c = 0; c < cols; c++) { const d = h('div', { class: 'cell' }); el.append(d); cells[r].push(d); } }
+  return { el, cells };
+}
+
+const CH = [['R', 'var(--r)'], ['G', 'var(--g)'], ['B', 'var(--b)']];
+let P = { N: 5, F: 3, S: 2, P: 1, K: 2 }, seed = 7, X, W, B, M, valid;
+function gen() {
+  const R = rng(seed);
+  X = [0, 1, 2].map(() => Array.from({ length: P.N }, () => Array.from({ length: P.N }, () => Math.floor(R() * 3))));
+  W = Array.from({ length: P.K }, () => [0, 1, 2].map(() => Array.from({ length: P.F }, () => Array.from({ length: P.F }, () => Math.floor(R() * 3) - 1))));
+  B = Array.from({ length: P.K }, (_, k) => k === 0 ? 1 : Math.floor(R() * 3) - 1);
+}
+const xp = (c, i, j) => { const a = i - P.P, b = j - P.P; return a < 0 || b < 0 || a >= P.N || b >= P.N ? 0 : X[c][a][b]; };
+function conv(k, i, j) {
+  const parts = [0, 1, 2].map(c => { let s = 0, t = []; for (let a = 0; a < P.F; a++) for (let b = 0; b < P.F; b++) { const x = xp(c, i * P.S + a, j * P.S + b), w = W[k][c][a][b]; s += x * w; t.push([x, w]); } return { s, t }; });
+  return { parts, total: parts[0].s + parts[1].s + parts[2].s + B[k] };
+}
+// --- contrôles
+const mk = (key, label, min, max) => slider({ label, min, max, value: P[key], onInput: v => { P[key] = v; gen(); build(); } });
+$('#opts').append(mk('N', 'Taille N', 3, 7), mk('F', 'Filtre F', 1, 5), mk('S', 'Pas S', 1, 3), mk('P', 'Remplissage P', 0, 2), mk('K', 'Nb de filtres K', 1, 3),
+  h('button', { class: 'btn', onclick: () => { seed = (Math.random() * 1e9) | 0; gen(); build(); } }, '🎲 Nouvelles valeurs'),
+  h('button', { class: 'btn', onclick: () => { P = { N: 5, F: 3, S: 2, P: 1, K: 2 }; seed = 7; $$('#opts .ctl').forEach((c, i) => c.set(Object.values(P)[i])); gen(); build(); } }, 'Exemple CS231n'));
+const player = new Player({ n: 1, onStep: render, speed: 1000 });
+const bar = playerBar(player); $('#bar').append(bar);
+let inCells, wCols, wCells, oCells, oCols;
+function build() {
+  const Np = P.N + 2 * P.P;
+  valid = Np >= P.F && (Np - P.F) % P.S === 0;
+  M = valid ? (Np - P.F) / P.S + 1 : 0;
+  $('#status').innerHTML = valid
+    ? `<span class="pill">Sortie : (${P.N} − ${P.F} + 2·${P.P}) / ${P.S} + 1 = ${M} → volume ${M}×${M}×${P.K}</span>`
+    : `<div class="note bad">Configuration invalide : (${P.N} − ${P.F} + 2·${P.P}) / ${P.S} + 1 = ${fmt((Np - P.F) / P.S + 1)} n’est pas un entier. Le filtre ne « tombe » pas exactement sur le bord. Changez S, P ou F.</div>`;
+  bar.style.display = valid ? '' : 'none';
+  const st = $('#stage'); st.innerHTML = '';
+  $('#kpis').innerHTML = `<div class="kpi"><div class="v">${P.N}×${P.N}×3</div><div class="k">entrée</div></div><div class="kpi"><div class="v">${P.K} × ${P.F}×${P.F}×3</div><div class="k">filtres</div></div><div class="kpi"><div class="v">${valid ? M + '×' + M + '×' + P.K : '—'}</div><div class="k">sortie</div></div><div class="kpi"><div class="v">${(P.F * P.F * 3 + 1) * P.K}</div><div class="k">paramètres = (${P.F}·${P.F}·3 + 1)·${P.K}</div></div>`;
+  if (!valid) { $('#formula').innerHTML = ''; return; }
+  const cs = Np > 7 ? 26 : 30;
+  // entrée
+  inCells = [];
+  const inCol = h('div', { class: 'col' }, h('div', { class: 'coltitle' }, `Entrée (+pad ${P.P}) ${Np}×${Np}×3`));
+  for (let c = 0; c < 3; c++) {
+    const m = matrix(Np, Np, { cs, gap: 2 });
+    m.cells.forEach((r, i) => r.forEach((d, j) => { const pad = i < P.P || j < P.P || i >= P.N + P.P || j >= P.N + P.P; d.classList.toggle('pad', pad); d.append(h('span', { class: 'v' }, xp(c, i, j)), h('span', { class: 'w' })); }));
+    inCells.push(m.cells);
+    inCol.append(h('div', {}, h('div', { class: 'chlab', style: { color: CH[c][1] } }, `x[:, :, ${c}]  (${CH[c][0]})`), m.el));
+  }
+  st.append(inCol);
+  // filtres
+  wCols = []; wCells = [];
+  for (let k = 0; k < P.K; k++) {
+    const col = h('div', { class: 'col' }, h('div', { class: 'coltitle' }, `Filtre W${k} ${P.F}×${P.F}×3`));
+    const cc = [];
+    for (let c = 0; c < 3; c++) {
+      const m = matrix(P.F, P.F, { cs, gap: 2 });
+      m.cells.forEach((r, a) => r.forEach((d, b) => { d.textContent = fmt(W[k][c][a][b]); d.style.background = divColor(W[k][c][a][b], 1.6); }));
+      cc.push(m.cells);
+      col.append(h('div', {}, h('div', { class: 'chlab', style: { color: CH[c][1] } }, `W${k}[:, :, ${c}]`), m.el));
+    }
+    col.append(h('div', { class: 'bias' }, `b${k} = ${fmt(B[k])}`));
+    wCols.push(col); wCells.push(cc); st.append(col);
+  }
+  // sortie
+  oCells = []; oCols = [];
+  const oc = h('div', { class: 'col' }, h('div', { class: 'coltitle' }, `Sortie ${M}×${M}×${P.K}`));
+  for (let k = 0; k < P.K; k++) {
+    const m = matrix(M, M, { cs: cs + 6, gap: 2 });
+    m.cells.forEach((r, i) => r.forEach((d, j) => { d.classList.add('clickable'); d.onclick = () => { bar.stopUI(); player.go(k * M * M + i * M + j); }; }));
+    oCells.push(m.cells);
+    oc.append(h('div', {}, h('div', { class: 'chlab' }, `o[:, :, ${k}]  ← W${k}`), m.el));
+  }
+  st.append(oc);
+  player.n = P.K * M * M; player.i = Math.min(player.i, player.n - 1);
+  render(player.i);
+}
+function render(step) {
+  if (!valid) return;
+  const k = Math.floor(step / (M * M)), i = Math.floor(step % (M * M) / M), j = step % M;
+  const r0 = i * P.S, c0 = j * P.S;
+  inCells.forEach((cells, c) => cells.forEach((r, a) => r.forEach((d, b) => {
+    const inW = a >= r0 && a < r0 + P.F && b >= c0 && b < c0 + P.F;
+    d.classList.toggle('win', inW);
+    d.querySelector('.w').textContent = inW ? fmt(W[k][c][a - r0][b - c0]) : '';
+  })));
+  wCols.forEach((col, kk) => { col.classList.toggle('active', kk === k); col.classList.toggle('idle', kk !== k); });
+  let mx = 1;
+  for (let kk = 0; kk < P.K; kk++) for (let a = 0; a < M; a++) for (let b = 0; b < M; b++) mx = Math.max(mx, Math.abs(conv(kk, a, b).total));
+  oCells.forEach((cells, kk) => cells.forEach((r, a) => r.forEach((d, b) => {
+    const idx = kk * M * M + a * M + b, done = idx <= step, v = conv(kk, a, b).total;
+    d.textContent = done ? fmt(v) : '·';
+    d.style.background = done ? divColor(v, mx) : 'var(--zero)';
+    d.classList.toggle('cur', idx === step);
+  })));
+  const r = conv(k, i, j);
+  $('#calcTitle').textContent = `Filtre W${k}, position (${i}, ${j}) — fenêtre de l’entrée commençant en (${r0}, ${c0})`;
+  let html = r.parts.map((p, c) => `<div class="calc-row"><span class="k" style="color:${CH[c][1]}">Canal ${CH[c][0]}</span><span>${p.t.map(([x, w]) => `${x}×${par(w)}`).join(' + ')} = <b>${fmt(p.s)}</b></span></div>`).join('');
+  html += `<div class="calc-row" style="margin-top:6px;border-top:1px solid var(--line);padding-top:6px"><span class="k">Total</span><span>${r.parts.map(p => par(p.s)).join(' + ')} + b${k} (${fmt(B[k])}) = <span class="res">${fmt(r.total)}</span></span></div>`;
+  $('#formula').innerHTML = html;
+}
+gen(); build();
+</script>
+</body>
+</html>

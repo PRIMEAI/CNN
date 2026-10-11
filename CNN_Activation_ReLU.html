@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f4ee;--panel:#ffffff;--ink:#1c1b19;--muted:#6b675f;--line:#e2ddd2;--soft:#efebe2;
+  --accent:#0f6e66;--accent-ink:#ffffff;--accent-soft:#d8ecea;--hl:#e09a2d;--hl-soft:#fbe8c6;
+  --pos:#2a6fdb;--neg:#d2453b;--zero:#f4f2ec;--r:#d2453b;--g:#2f9e57;--b:#2a6fdb;
+  --shadow:0 1px 2px rgba(30,25,15,.06),0 4px 16px rgba(30,25,15,.05);
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#151513;--panel:#1e1d1a;--ink:#ece9e2;--muted:#a19b8f;--line:#35322c;--soft:#272520;
+  --accent:#4fb5aa;--accent-ink:#0d1f1d;--accent-soft:#1b3b38;--hl:#f0b456;--hl-soft:#41321a;
+  --pos:#6ea3ff;--neg:#ff7d72;--zero:#25231f;--r:#ff7d72;--g:#5cc97f;--b:#6ea3ff;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.25);}}
+:root[data-theme="dark"]{
+  --bg:#151513;--panel:#1e1d1a;--ink:#ece9e2;--muted:#a19b8f;--line:#35322c;--soft:#272520;
+  --accent:#4fb5aa;--accent-ink:#0d1f1d;--accent-soft:#1b3b38;--hl:#f0b456;--hl-soft:#41321a;
+  --pos:#6ea3ff;--neg:#ff7d72;--zero:#25231f;--r:#ff7d72;--g:#5cc97f;--b:#6ea3ff;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.25);}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 var(--sans);}
+.wrap{max-width:1180px;margin:0 auto;padding:28px 16px 48px}
+header.top{margin-bottom:22px}
+.eyebrow{font:500 12px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.eyebrow a{color:var(--muted);text-decoration:none}.eyebrow a:hover{color:var(--accent)}
+h1{font-size:clamp(26px,4vw,36px);line-height:1.15;margin:8px 0 10px;letter-spacing:-.01em;font-weight:600}
+h2{font-size:19px;margin:0 0 12px;font-weight:600}
+h3{font-size:15px;margin:0 0 8px;font-weight:600}
+.lead{max-width:760px;color:var(--muted);margin:0;font-size:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow)}
+.stack{display:flex;flex-direction:column;gap:16px}
+.row{display:flex;gap:16px;flex-wrap:wrap}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.mono{font-family:var(--mono)}
+.controls{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center}
+.ctl{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--muted);min-width:0}
+.ctl b{color:var(--ink);font:600 13px var(--mono)}
+.ctl .lab{display:flex;justify-content:space-between;gap:10px}
+select,input[type=number],input[type=text]{font:14px var(--sans);color:var(--ink);background:var(--soft);border:1px solid var(--line);border-radius:8px;padding:6px 8px;min-height:34px}
+input[type=number]{width:72px;font-family:var(--mono)}
+input[type=range]{accent-color:var(--accent);width:150px}
+.btn{font:500 14px var(--sans);color:var(--ink);background:var(--soft);border:1px solid var(--line);border-radius:9px;padding:7px 13px;cursor:pointer;min-height:36px;display:inline-flex;align-items:center;gap:6px;transition:background .15s,border-color .15s}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.on{background:var(--accent-soft);border-color:var(--accent);color:var(--ink)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.seg button{font:500 13px var(--sans);background:var(--soft);color:var(--ink);border:0;padding:7px 12px;cursor:pointer;min-height:34px}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button.on{background:var(--accent);color:var(--accent-ink)}
+.mat{display:inline-grid;gap:3px;font-family:var(--mono)}
+.cell{width:var(--cs,40px);height:var(--cs,40px);display:flex;align-items:center;justify-content:center;border-radius:6px;background:var(--zero);font-size:calc(var(--cs,40px)*.36);position:relative;border:1.5px solid transparent;transition:background .2s,border-color .15s,box-shadow .15s;color:var(--ink);user-select:none}
+.cell.pad{background:transparent;border:1.5px dashed var(--line);color:var(--muted)}
+.cell.win{border-color:var(--hl);box-shadow:0 0 0 2px var(--hl-soft)}
+.cell.cur{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.cell.dim{opacity:.35}
+.cell .w{position:absolute;right:3px;bottom:1px;font-size:calc(var(--cs,40px)*.24);color:var(--hl);font-weight:600}
+.cell input{width:100%;height:100%;border:0;background:transparent;text-align:center;font:inherit;color:inherit;padding:0}
+.cell input:focus{outline:2px solid var(--accent);border-radius:6px}
+.mlabel{font:600 12px var(--mono);color:var(--muted);margin-bottom:6px;letter-spacing:.03em}
+.formula{font-family:var(--mono);font-size:14px;background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:12px 14px;overflow-x:auto;line-height:1.8}
+.formula .t{display:inline-block;padding:0 5px;border-radius:5px;background:var(--panel);border:1px solid var(--line);margin:2px 1px}
+.formula .res{color:var(--accent);font-weight:600}
+.pill{display:inline-flex;align-items:center;gap:6px;font:600 12px var(--mono);padding:3px 9px;border-radius:999px;background:var(--accent-soft);color:var(--ink)}
+.pill.warn{background:var(--hl-soft)}
+.pill.bad{background:color-mix(in oklab,var(--neg) 22%,transparent)}
+.note{border-left:3px solid var(--accent);padding:8px 12px;background:var(--soft);border-radius:0 8px 8px 0;font-size:14px}
+.note.warn{border-color:var(--hl)}
+.note.bad{border-color:var(--neg)}
+.kpis{display:flex;gap:10px;flex-wrap:wrap}
+.kpi{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:130px}
+.kpi .v{font:600 22px var(--mono);color:var(--ink)}
+.kpi .k{font-size:12px;color:var(--muted)}
+.op{font:600 22px var(--mono);color:var(--muted);align-self:center;padding:0 4px}
+.scrollx{overflow-x:auto;max-width:100%}
+footer{margin-top:36px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:14px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer a{color:var(--accent)}
+svg text{font-family:var(--sans)}
+kbd{font:12px var(--mono);background:var(--soft);border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:1px 5px}
+@media (max-width:640px){.wrap{padding:20px 16px 40px}.card{padding:14px}input[type=range]{width:120px}}
+</style>
+<title>CNN – ReLU sur les cartes d’activation</title>
+<style>
+.stage{display:flex;flex-wrap:wrap;gap:16px 14px;align-items:center;justify-content:center}
+.stage .cell{font-size:9.5px}
+#fop{font-size:14px;max-width:80px;text-align:center}
+.small-k .cell{font-size:12px}
+#plot svg{width:100%;max-width:420px;height:auto;display:block;margin:0 auto}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:860px){.grid2{grid-template-columns:1fr}}
+.cell.hov{border-color:var(--hl);box-shadow:0 0 0 2px var(--hl-soft)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <div class="eyebrow"><span>Réseaux convolutifs · Diapos 54–55</span><a href="index.html">← Toutes les animations</a></div>
+  <h1>Fonction d’activation sur une carte d’activation</h1>
+  <p class="lead">Après la convolution (et le biais), on applique une non-linéarité <strong>élément par élément</strong> : chaque valeur de la carte passe par la fonction f. Avec ReLU, f(z) = max(0, z) : les valeurs négatives deviennent 0 et les positives restent inchangées.</p>
+</header>
+<div class="stack">
+  <section class="card stack">
+    <div class="controls" id="ctl"></div>
+    <div class="controls" id="ctl2"></div>
+  </section>
+  <section class="card">
+    <div class="stage" id="stage"></div>
+    <p class="small muted" style="text-align:center;margin:10px 0 0">Survolez une case de z ou de f(z) pour suivre la valeur sur la courbe.</p>
+  </section>
+  <div class="grid2">
+    <section class="card stack"><h2 id="ftitle">La fonction</h2><div id="plot"></div></section>
+    <section class="card stack">
+      <h2>Ce qui se passe</h2>
+      <div class="formula" id="hov">—</div>
+      <div class="kpis" id="kpis"></div>
+      <div class="note" id="fnote"></div>
+    </section>
+  </div>
+  <section class="card stack">
+    <h2>À retenir</h2>
+    <div class="note">Sans non-linéarité, empiler des convolutions reviendrait à une seule convolution (une composition d’opérations linéaires reste linéaire). La fonction d’activation permet au réseau d’apprendre des fonctions complexes.</div>
+    <div class="note">ReLU est la plus utilisée dans les CNN : très rapide à calculer, gradient égal à 1 pour z &gt; 0 (pas de saturation), et elle produit des cartes <strong>creuses</strong> (beaucoup de zéros). Son défaut : un neurone dont z reste toujours négatif ne reçoit plus de gradient (« ReLU morte ») ; Leaky ReLU et ELU corrigent ce problème.</div>
+    <div class="note warn">Le biais déplace toutes les valeurs de z : avec ReLU, il fixe donc le seuil à partir duquel le neurone s’active. Essayez le curseur de biais.</div>
+  </section>
+</div>
+<footer><span>Deep Learning · Réseaux convolutifs – principes de base</span><a href="index.html">Toutes les animations →</a></footer>
+</div>
+<script>
+// ---- utilitaires communs ----
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+function h(tag, attrs = {}, ...kids) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs || {})) {
+    if (k === 'class') e.className = v;
+    else if (k === 'style' && v && typeof v === 'object') { for (const [sk, sv] of Object.entries(v)) { if (sv == null) continue; sk.startsWith('--') ? e.style.setProperty(sk, sv) : (e.style[sk] = sv); } }
+    else if (k.startsWith('on')) e.addEventListener(k.slice(2), v);
+    else if (k === 'html') e.innerHTML = v;
+    else if (v !== false && v != null) e.setAttribute(k, v);
+  }
+  for (const c of kids.flat()) if (c != null) e.append(c.nodeType ? c : document.createTextNode(c));
+  return e;
+}
+// nombres au format français (virgule décimale, signe moins typographique)
+function fmt(x, d = 2) {
+  if (!isFinite(x)) return '—';
+  let s = (Math.round(x * 10 ** d) / 10 ** d).toString();
+  if (Object.is(Math.round(x * 10 ** d), -0) || s === '-0') s = '0';
+  return s.replace('.', ',').replace('-', '−');
+}
+function fmtInt(n) { return Math.round(n).toLocaleString('fr-CA').replace(/ | /g, ' '); }
+function par(x) { return x < 0 ? '(' + fmt(x) + ')' : fmt(x); }
+const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
+// couleur divergente (négatif → rouge, positif → bleu)
+function divColor(v, m) {
+  if (!m) return 'var(--zero)';
+  const t = clamp(Math.abs(v) / m, 0, 1);
+  return `color-mix(in oklab, ${v < 0 ? 'var(--neg)' : 'var(--pos)'} ${Math.round(t * 70)}%, var(--zero))`;
+}
+function seqColor(v, m, c = 'var(--accent)', top = 75) {
+  const t = m ? clamp(v / m, 0, 1) : 0;
+  return `color-mix(in oklab, ${c} ${Math.round(t * top)}%, var(--zero))`;
+}
+// générateur pseudo-aléatoire reproductible
+function rng(seed = 1) { let s = seed >>> 0; return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296); }
+// lecteur pas à pas (lecture / pause / vitesse)
+class Player {
+  constructor({ n, onStep, speed = 900 }) { this.n = n; this.i = 0; this.onStep = onStep; this.speed = speed; this.t = null; }
+  go(i) { this.i = ((i % this.n) + this.n) % this.n; this.onStep(this.i); }
+  next() { this.go(this.i + 1); } prev() { this.go(this.i - 1); }
+  play() { this.stop(); this.t = setInterval(() => this.next(), this.speed); this.playing = true; }
+  stop() { clearInterval(this.t); this.t = null; this.playing = false; }
+  toggle() { this.playing ? this.stop() : this.play(); return this.playing; }
+  setSpeed(ms) { this.speed = ms; if (this.playing) this.play(); }
+}
+// barre de contrôle standard pour un Player
+function playerBar(p, { extra = [] } = {}) {
+  const play = h('button', { class: 'btn primary', onclick: () => { play.textContent = p.toggle() ? '❚❚ Pause' : '▶ Lecture'; } }, '▶ Lecture');
+  const sp = h('input', { type: 'range', min: 150, max: 2000, step: 50, value: 2150 - p.speed, oninput: e => p.setSpeed(2150 - +e.target.value), 'aria-label': 'Vitesse' });
+  const bar = h('div', { class: 'controls' },
+    h('button', { class: 'btn', onclick: () => { p.stop(); play.textContent = '▶ Lecture'; p.prev(); } }, '◀ Précédent'),
+    play,
+    h('button', { class: 'btn', onclick: () => { p.stop(); play.textContent = '▶ Lecture'; p.next(); } }, 'Suivant ▶'),
+    h('label', { class: 'ctl' }, h('span', {}, 'Vitesse'), sp), ...extra);
+  bar.stopUI = () => { p.stop(); play.textContent = '▶ Lecture'; };
+  return bar;
+}
+// contrôle curseur avec étiquette et valeur
+function slider({ label, min, max, step = 1, value, onInput, fmtv = v => v, width }) {
+  const out = h('b', {}, fmtv(value));
+  const inp = h('input', { type: 'range', min, max, step, value, style: width ? { width } : null });
+  inp.addEventListener('input', () => { out.textContent = fmtv(+inp.value); onInput(+inp.value); });
+  const w = h('label', { class: 'ctl' }, h('span', { class: 'lab' }, h('span', {}, label), out), inp);
+  w.input = inp; w.set = v => { inp.value = v; out.textContent = fmtv(+v); };
+  return w;
+}
+function segmented(options, value, onChange) {
+  const s = h('div', { class: 'seg', role: 'group' });
+  const btns = options.map(([v, l]) => h('button', { class: v === value ? 'on' : '', onclick: () => { btns.forEach(b => b.classList.remove('on')); b2[v].classList.add('on'); onChange(v); } }, l));
+  const b2 = {}; options.forEach(([v], i) => b2[v] = btns[i]);
+  s.append(...btns); s.set = v => { btns.forEach(b => b.classList.remove('on')); b2[v] && b2[v].classList.add('on'); };
+  return s;
+}
+// matrice de cellules ; retourne {el, cells[r][c]}
+function matrix(rows, cols, { cs = 40, gap = 3, cls = '' } = {}) {
+  const el = h('div', { class: 'mat ' + cls, style: { gridTemplateColumns: `repeat(${cols}, var(--cs))`, '--cs': cs + 'px', gap: gap + 'px' } });
+  const cells = [];
+  for (let r = 0; r < rows; r++) { cells.push([]); for (let c = 0; c < cols; c++) { const d = h('div', { class: 'cell' }); el.append(d); cells[r].push(d); } }
+  return { el, cells };
+}
+
+const N = 12, M = 10;
+const SHAPES = {
+  carre: (i, j) => (i >= 3 && i <= 8 && j >= 3 && j <= 8) ? 1 : 0,
+  croix: (i, j) => (i === 5 || i === 6 || j === 5 || j === 6) && i > 0 && j > 0 && i < 11 && j < 11 ? 1 : 0,
+  diag: (i, j) => Math.abs(i - j) <= 1 ? 1 : 0,
+  cercle: (i, j) => { const d = Math.hypot(i - 5.5, j - 5.5); return d > 2.6 && d < 4.6 ? 1 : 0; },
+};
+const KS = {
+  sobx: { n: 'Sobel X', w: [[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]] },
+  soby: { n: 'Sobel Y', w: [[-1, -2, -1], [0, 0, 0], [1, 2, 1]] },
+  lap: { n: 'Laplacien', w: [[0, 1, 0], [1, -4, 1], [0, 1, 0]] },
+  diag: { n: 'Diagonale', w: [[2, -1, -1], [-1, 2, -1], [-1, -1, 2]] },
+};
+const ACT = {
+  relu: { n: 'ReLU', f: z => Math.max(0, z), t: 'f(z) = max(0, z)' },
+  leaky: { n: 'Leaky ReLU', f: z => z > 0 ? z : alpha * z, t: 'f(z) = z si z > 0, sinon α·z' },
+  elu: { n: 'ELU', f: z => z > 0 ? z : Math.exp(z) - 1, t: 'f(z) = z si z > 0, sinon eᶻ − 1' },
+  sig: { n: 'Sigmoïde', f: z => 1 / (1 + Math.exp(-z)), t: 'f(z) = 1 / (1 + e⁻ᶻ)' },
+  tanh: { n: 'Tanh', f: z => Math.tanh(z), t: 'f(z) = tanh(z)' },
+};
+const NOTES = {
+  relu: 'Les valeurs négatives sont mises à zéro : seules les zones où le filtre « reconnaît » son motif restent actives.',
+  leaky: 'Les valeurs négatives sont multipliées par α (petit) au lieu d’être annulées : le gradient ne s’annule jamais complètement.',
+  elu: 'Comme ReLU pour z > 0, mais tend doucement vers −1 pour z négatif : sortie de moyenne plus proche de 0.',
+  sig: 'Écrase tout entre 0 et 1. Pour |z| grand, la courbe est plate : le gradient devient presque nul (saturation). Peu utilisée dans les couches cachées des CNN.',
+  tanh: 'Écrase tout entre −1 et 1, centrée en 0. Sature aussi pour |z| grand. Utilisée dans le LeNet-5 original.',
+};
+let shape = 'carre', kk = 'sobx', act = 'relu', bias = 0, alpha = 0.1, hov = null;
+$('#ctl').append(
+  h('label', { class: 'ctl' }, h('span', {}, 'Image d’entrée'), segmented([['carre', 'Carré'], ['croix', 'Croix'], ['diag', 'Diagonale'], ['cercle', 'Anneau']], shape, v => { shape = v; build(); })),
+  h('label', { class: 'ctl' }, h('span', {}, 'Filtre'), segmented(Object.entries(KS).map(([k, v]) => [k, v.n]), kk, v => { kk = v; build(); })));
+const aSl = slider({ label: 'α (Leaky ReLU)', min: 0.01, max: 0.5, step: 0.01, value: alpha, fmtv: v => fmt(v), onInput: v => { alpha = v; update(); } });
+$('#ctl2').append(
+  h('label', { class: 'ctl' }, h('span', {}, 'Fonction d’activation'), segmented(Object.entries(ACT).map(([k, v]) => [k, v.n]), act, v => { act = v; aSl.style.display = v === 'leaky' ? '' : 'none'; update(); })),
+  slider({ label: 'Biais b', min: -4, max: 4, step: 0.5, value: 0, fmtv: v => fmt(v, 1), onInput: v => { bias = v; update(); } }), aSl);
+aSl.style.display = 'none';
+let X, Z, cz, ca;
+function build() {
+  X = Array.from({ length: N }, (_, i) => Array.from({ length: N }, (_, j) => SHAPES[shape](i, j)));
+  const st = $('#stage'); st.innerHTML = '';
+  const small = innerWidth < 640, csI = small ? 15 : 14, csO = small ? 18 : 25;
+  const mi = matrix(N, N, { cs: csI, gap: 1 });
+  mi.cells.forEach((r, i) => r.forEach((d, j) => { d.style.background = X[i][j] ? 'var(--ink)' : 'var(--zero)'; d.style.borderRadius = '3px'; }));
+  const mk = matrix(3, 3, { cs: 30, gap: 2, cls: 'small-k' });
+  mk.cells.forEach((r, a) => r.forEach((d, b) => { const w = KS[kk].w[a][b]; d.textContent = fmt(w); d.style.background = divColor(w, 2.5); }));
+  const mz = matrix(M, M, { cs: csO, gap: 2 }), ma = matrix(M, M, { cs: csO, gap: 2 }); cz = mz.cells; ca = ma.cells;
+  [cz, ca].forEach(C => C.forEach((r, i) => r.forEach((d, j) => { d.addEventListener('mouseenter', () => { hov = [i, j]; update(); }); d.addEventListener('click', () => { hov = [i, j]; update(); }); })));
+  st.append(h('div', {}, h('div', { class: 'mlabel' }, `ENTRÉE ${N}×${N}`), mi.el), h('div', { class: 'op' }, '∗'),
+    h('div', {}, h('div', { class: 'mlabel' }, 'FILTRE'), mk.el), h('div', { class: 'op' }, '+ b →'),
+    h('div', {}, h('div', { class: 'mlabel' }, 'z = CONV + b'), mz.el), h('div', { class: 'op', id: 'fop' }, 'f →'),
+    h('div', {}, h('div', { class: 'mlabel', id: 'alab' }, 'f(z)'), ma.el));
+  Z = Array.from({ length: M }, (_, i) => Array.from({ length: M }, (_, j) => { let s = 0; for (let a = 0; a < 3; a++) for (let b = 0; b < 3; b++) s += X[i + a][j + b] * KS[kk].w[a][b]; return s; }));
+  update();
+}
+function update() {
+  const f = ACT[act].f, zs = Z.map(r => r.map(v => v + bias)), as = zs.map(r => r.map(f));
+  const mz = Math.max(1, ...zs.flat().map(Math.abs)), ma = Math.max(1e-9, ...as.flat().map(Math.abs));
+  const dec = act === 'sig' || act === 'tanh' || act === 'elu' || act === 'leaky';
+  cz.forEach((r, i) => r.forEach((d, j) => { d.textContent = fmt(zs[i][j], 1); d.style.background = divColor(zs[i][j], mz); d.classList.toggle('hov', !!hov && hov[0] === i && hov[1] === j); }));
+  ca.forEach((r, i) => r.forEach((d, j) => { const v = as[i][j]; d.textContent = fmt(v, dec && Math.abs(v) < 1 ? 2 : 1); d.style.background = divColor(v, ma); d.classList.toggle('hov', !!hov && hov[0] === i && hov[1] === j); }));
+  $('#fop').textContent = ACT[act].n + ' →'; $('#alab').textContent = `f(z) — ${ACT[act].n.toUpperCase()}`;
+  $('#ftitle').textContent = `${ACT[act].n} : ${ACT[act].t}`;
+  $('#fnote').textContent = NOTES[act];
+  const all = zs.flat(), neg = all.filter(v => v < 0).length, zero = as.flat().filter(v => v === 0).length;
+  $('#kpis').innerHTML = `<div class="kpi"><div class="v">${neg}/${all.length}</div><div class="k">valeurs de z négatives</div></div><div class="kpi"><div class="v">${zero}/${all.length}</div><div class="k">sorties exactement nulles</div></div>`;
+  $('#hov').innerHTML = hov ? `Case (${hov[0]}, ${hov[1]}) : z = ${fmt(Z[hov[0]][hov[1]], 1)} + (${fmt(bias, 1)}) = ${fmt(zs[hov[0]][hov[1]], 2)} → ${ACT[act].n}(z) = <span class="res">${fmt(as[hov[0]][hov[1]], 3)}</span>` : 'Survolez une case pour voir le calcul.';
+  plot(all, hov ? zs[hov[0]][hov[1]] : null);
+}
+function plot(zs, zh) {
+  const f = ACT[act].f, W = 420, H = 280, pad = 34;
+  const zmax = Math.max(4, ...zs.map(Math.abs)) * 1.05;
+  let ymin = -zmax, ymax = zmax;
+  if (act === 'sig') { ymin = -0.2; ymax = 1.2; } if (act === 'tanh') { ymin = -1.3; ymax = 1.3; }
+  const X = z => pad + (z + zmax) / (2 * zmax) * (W - 2 * pad), Y = y => H - pad - (y - ymin) / (ymax - ymin) * (H - 2 * pad);
+  let d = ''; for (let i = 0; i <= 200; i++) { const z = -zmax + 2 * zmax * i / 200; d += (i ? 'L' : 'M') + X(z).toFixed(1) + ',' + Y(f(z)).toFixed(1); }
+  let s = `<svg viewBox="0 0 ${W} ${H}">`;
+  s += `<line x1="${pad}" y1="${Y(0)}" x2="${W - pad}" y2="${Y(0)}" stroke="var(--line)" stroke-width="1.5"/><line x1="${X(0)}" y1="${pad / 2}" x2="${X(0)}" y2="${H - pad}" stroke="var(--line)" stroke-width="1.5"/>`;
+  s += `<text x="${W - pad}" y="${Y(0) - 6}" font-size="12" text-anchor="end" fill="var(--muted)">z</text><text x="${X(0) + 6}" y="${pad / 2 + 10}" font-size="12" fill="var(--muted)">f(z)</text>`;
+  for (const t of [-Math.floor(zmax), Math.floor(zmax)]) s += `<text x="${X(t)}" y="${H - pad + 16}" font-size="11" text-anchor="middle" fill="var(--muted)">${fmt(t, 0)}</text>`;
+  s += `<path d="${d}" fill="none" stroke="var(--accent)" stroke-width="3"/>`;
+  for (const z of zs) s += `<circle cx="${X(z)}" cy="${Y(f(z))}" r="4" fill="${z < 0 ? 'var(--neg)' : 'var(--pos)'}" fill-opacity=".45"/>`;
+  if (zh !== null) s += `<line x1="${X(zh)}" y1="${Y(0)}" x2="${X(zh)}" y2="${Y(f(zh))}" stroke="var(--hl)" stroke-dasharray="4 3" stroke-width="2"/><circle cx="${X(zh)}" cy="${Y(f(zh))}" r="7" fill="var(--hl)" stroke="var(--panel)" stroke-width="2"/>`;
+  $('#plot').innerHTML = s + `</svg><p class="small muted" style="text-align:center;margin:4px 0 0">Chaque point = une case de la carte z (rouge : z &lt; 0, bleu : z ≥ 0).</p>`;
+}
+build();
+</script>
+</body>
+</html>

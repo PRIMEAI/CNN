@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f4ee;--panel:#ffffff;--ink:#1c1b19;--muted:#6b675f;--line:#e2ddd2;--soft:#efebe2;
+  --accent:#0f6e66;--accent-ink:#ffffff;--accent-soft:#d8ecea;--hl:#e09a2d;--hl-soft:#fbe8c6;
+  --pos:#2a6fdb;--neg:#d2453b;--zero:#f4f2ec;--r:#d2453b;--g:#2f9e57;--b:#2a6fdb;
+  --shadow:0 1px 2px rgba(30,25,15,.06),0 4px 16px rgba(30,25,15,.05);
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#151513;--panel:#1e1d1a;--ink:#ece9e2;--muted:#a19b8f;--line:#35322c;--soft:#272520;
+  --accent:#4fb5aa;--accent-ink:#0d1f1d;--accent-soft:#1b3b38;--hl:#f0b456;--hl-soft:#41321a;
+  --pos:#6ea3ff;--neg:#ff7d72;--zero:#25231f;--r:#ff7d72;--g:#5cc97f;--b:#6ea3ff;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.25);}}
+:root[data-theme="dark"]{
+  --bg:#151513;--panel:#1e1d1a;--ink:#ece9e2;--muted:#a19b8f;--line:#35322c;--soft:#272520;
+  --accent:#4fb5aa;--accent-ink:#0d1f1d;--accent-soft:#1b3b38;--hl:#f0b456;--hl-soft:#41321a;
+  --pos:#6ea3ff;--neg:#ff7d72;--zero:#25231f;--r:#ff7d72;--g:#5cc97f;--b:#6ea3ff;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.25);}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 var(--sans);}
+.wrap{max-width:1180px;margin:0 auto;padding:28px 16px 48px}
+header.top{margin-bottom:22px}
+.eyebrow{font:500 12px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.eyebrow a{color:var(--muted);text-decoration:none}.eyebrow a:hover{color:var(--accent)}
+h1{font-size:clamp(26px,4vw,36px);line-height:1.15;margin:8px 0 10px;letter-spacing:-.01em;font-weight:600}
+h2{font-size:19px;margin:0 0 12px;font-weight:600}
+h3{font-size:15px;margin:0 0 8px;font-weight:600}
+.lead{max-width:760px;color:var(--muted);margin:0;font-size:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow)}
+.stack{display:flex;flex-direction:column;gap:16px}
+.row{display:flex;gap:16px;flex-wrap:wrap}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.mono{font-family:var(--mono)}
+.controls{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center}
+.ctl{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--muted);min-width:0}
+.ctl b{color:var(--ink);font:600 13px var(--mono)}
+.ctl .lab{display:flex;justify-content:space-between;gap:10px}
+select,input[type=number],input[type=text]{font:14px var(--sans);color:var(--ink);background:var(--soft);border:1px solid var(--line);border-radius:8px;padding:6px 8px;min-height:34px}
+input[type=number]{width:72px;font-family:var(--mono)}
+input[type=range]{accent-color:var(--accent);width:150px}
+.btn{font:500 14px var(--sans);color:var(--ink);background:var(--soft);border:1px solid var(--line);border-radius:9px;padding:7px 13px;cursor:pointer;min-height:36px;display:inline-flex;align-items:center;gap:6px;transition:background .15s,border-color .15s}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.on{background:var(--accent-soft);border-color:var(--accent);color:var(--ink)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.seg button{font:500 13px var(--sans);background:var(--soft);color:var(--ink);border:0;padding:7px 12px;cursor:pointer;min-height:34px}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button.on{background:var(--accent);color:var(--accent-ink)}
+.mat{display:inline-grid;gap:3px;font-family:var(--mono)}
+.cell{width:var(--cs,40px);height:var(--cs,40px);display:flex;align-items:center;justify-content:center;border-radius:6px;background:var(--zero);font-size:calc(var(--cs,40px)*.36);position:relative;border:1.5px solid transparent;transition:background .2s,border-color .15s,box-shadow .15s;color:var(--ink);user-select:none}
+.cell.pad{background:transparent;border:1.5px dashed var(--line);color:var(--muted)}
+.cell.win{border-color:var(--hl);box-shadow:0 0 0 2px var(--hl-soft)}
+.cell.cur{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.cell.dim{opacity:.35}
+.cell .w{position:absolute;right:3px;bottom:1px;font-size:calc(var(--cs,40px)*.24);color:var(--hl);font-weight:600}
+.cell input{width:100%;height:100%;border:0;background:transparent;text-align:center;font:inherit;color:inherit;padding:0}
+.cell input:focus{outline:2px solid var(--accent);border-radius:6px}
+.mlabel{font:600 12px var(--mono);color:var(--muted);margin-bottom:6px;letter-spacing:.03em}
+.formula{font-family:var(--mono);font-size:14px;background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:12px 14px;overflow-x:auto;line-height:1.8}
+.formula .t{display:inline-block;padding:0 5px;border-radius:5px;background:var(--panel);border:1px solid var(--line);margin:2px 1px}
+.formula .res{color:var(--accent);font-weight:600}
+.pill{display:inline-flex;align-items:center;gap:6px;font:600 12px var(--mono);padding:3px 9px;border-radius:999px;background:var(--accent-soft);color:var(--ink)}
+.pill.warn{background:var(--hl-soft)}
+.pill.bad{background:color-mix(in oklab,var(--neg) 22%,transparent)}
+.note{border-left:3px solid var(--accent);padding:8px 12px;background:var(--soft);border-radius:0 8px 8px 0;font-size:14px}
+.note.warn{border-color:var(--hl)}
+.note.bad{border-color:var(--neg)}
+.kpis{display:flex;gap:10px;flex-wrap:wrap}
+.kpi{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:130px}
+.kpi .v{font:600 22px var(--mono);color:var(--ink)}
+.kpi .k{font-size:12px;color:var(--muted)}
+.op{font:600 22px var(--mono);color:var(--muted);align-self:center;padding:0 4px}
+.scrollx{overflow-x:auto;max-width:100%}
+footer{margin-top:36px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:14px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer a{color:var(--accent)}
+svg text{font-family:var(--sans)}
+kbd{font:12px var(--mono);background:var(--soft);border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:1px 5px}
+@media (max-width:640px){.wrap{padding:20px 16px 40px}.card{padding:14px}input[type=range]{width:120px}}
+</style>
+<title>CNN – Connexions locales et partage de poids</title>
+<style>
+#net svg,#vol svg{width:100%;height:auto;display:block}
+#vol svg{max-width:760px;margin:0 auto}
+#net svg .o{cursor:pointer}
+.grid2{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:860px){.grid2{grid-template-columns:1fr}}
+.barrow{display:grid;grid-template-columns:200px 1fr 120px;gap:8px;align-items:center;font-size:13px;margin:8px 0}
+.barrow .b{height:20px;border-radius:5px}
+.barrow span:last-child{font-family:var(--mono);text-align:right}
+@media (max-width:640px){.barrow{grid-template-columns:110px 1fr 96px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <div class="eyebrow"><span>Réseaux convolutifs · Diapos 109–112</span><a href="index.html">← Toutes les animations</a></div>
+  <h1>Un neurone à connexions locales qui partage ses poids</h1>
+  <p class="lead">Une valeur de la carte d’activation, c’est <strong>un neurone</strong> : un produit scalaire entre ses poids et une petite région de l’entrée, plus un biais. Deux idées distinguent la couche de convolution d’une couche entièrement connectée (FC) : la <strong>connectivité locale</strong> et le <strong>partage des poids</strong>.</p>
+</header>
+<div class="stack">
+  <section class="card stack">
+    <div class="controls"><label class="ctl"><span>Type de couche</span><span id="mode"></span></label></div>
+    <div class="grid2">
+      <div id="net"></div>
+      <div class="stack">
+        <div class="note" id="desc"></div>
+        <div class="kpis" id="toy"></div>
+        <p class="small muted" style="margin:0">Survolez ou touchez un neurone de sortie. Couleur des cases d’entrée = poids du neurone choisi (bleu positif, rouge négatif). Comparez les poids de deux neurones voisins dans chaque mode.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="card stack">
+    <h2>Combien de paramètres ?</h2>
+    <div class="controls" id="pctl"></div>
+    <div id="pbars"></div>
+    <p class="small muted" style="margin:0">Échelle logarithmique. Même sortie M×M×K dans les trois cas (S = 1, P = 0).</p>
+  </section>
+
+  <section class="card stack">
+    <h2>La couche vue comme une grille 3D de neurones (28×28×5)</h2>
+    <div id="vol"></div>
+    <div class="note">Les 5 neurones de la colonne orange regardent <strong>la même région</strong> 5×5×3 de l’entrée, chacun avec un filtre différent. Les 28×28 neurones d’une même tranche (une carte d’activation) partagent <strong>les mêmes poids</strong> : ils détectent le même motif à des endroits différents.</div>
+  </section>
+</div>
+<footer><span>Deep Learning · Réseaux convolutifs – principes de base</span><a href="index.html">Toutes les animations →</a></footer>
+</div>
+<script>
+// ---- utilitaires communs ----
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+function h(tag, attrs = {}, ...kids) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs || {})) {
+    if (k === 'class') e.className = v;
+    else if (k === 'style' && v && typeof v === 'object') { for (const [sk, sv] of Object.entries(v)) { if (sv == null) continue; sk.startsWith('--') ? e.style.setProperty(sk, sv) : (e.style[sk] = sv); } }
+    else if (k.startsWith('on')) e.addEventListener(k.slice(2), v);
+    else if (k === 'html') e.innerHTML = v;
+    else if (v !== false && v != null) e.setAttribute(k, v);
+  }
+  for (const c of kids.flat()) if (c != null) e.append(c.nodeType ? c : document.createTextNode(c));
+  return e;
+}
+// nombres au format français (virgule décimale, signe moins typographique)
+function fmt(x, d = 2) {
+  if (!isFinite(x)) return '—';
+  let s = (Math.round(x * 10 ** d) / 10 ** d).toString();
+  if (Object.is(Math.round(x * 10 ** d), -0) || s === '-0') s = '0';
+  return s.replace('.', ',').replace('-', '−');
+}
+function fmtInt(n) { return Math.round(n).toLocaleString('fr-CA').replace(/ | /g, ' '); }
+function par(x) { return x < 0 ? '(' + fmt(x) + ')' : fmt(x); }
+const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
+// couleur divergente (négatif → rouge, positif → bleu)
+function divColor(v, m) {
+  if (!m) return 'var(--zero)';
+  const t = clamp(Math.abs(v) / m, 0, 1);
+  return `color-mix(in oklab, ${v < 0 ? 'var(--neg)' : 'var(--pos)'} ${Math.round(t * 70)}%, var(--zero))`;
+}
+function seqColor(v, m, c = 'var(--accent)', top = 75) {
+  const t = m ? clamp(v / m, 0, 1) : 0;
+  return `color-mix(in oklab, ${c} ${Math.round(t * top)}%, var(--zero))`;
+}
+// générateur pseudo-aléatoire reproductible
+function rng(seed = 1) { let s = seed >>> 0; return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296); }
+// lecteur pas à pas (lecture / pause / vitesse)
+class Player {
+  constructor({ n, onStep, speed = 900 }) { this.n = n; this.i = 0; this.onStep = onStep; this.speed = speed; this.t = null; }
+  go(i) { this.i = ((i % this.n) + this.n) % this.n; this.onStep(this.i); }
+  next() { this.go(this.i + 1); } prev() { this.go(this.i - 1); }
+  play() { this.stop(); this.t = setInterval(() => this.next(), this.speed); this.playing = true; }
+  stop() { clearInterval(this.t); this.t = null; this.playing = false; }
+  toggle() { this.playing ? this.stop() : this.play(); return this.playing; }
+  setSpeed(ms) { this.speed = ms; if (this.playing) this.play(); }
+}
+// barre de contrôle standard pour un Player
+function playerBar(p, { extra = [] } = {}) {
+  const play = h('button', { class: 'btn primary', onclick: () => { play.textContent = p.toggle() ? '❚❚ Pause' : '▶ Lecture'; } }, '▶ Lecture');
+  const sp = h('input', { type: 'range', min: 150, max: 2000, step: 50, value: 2150 - p.speed, oninput: e => p.setSpeed(2150 - +e.target.value), 'aria-label': 'Vitesse' });
+  const bar = h('div', { class: 'controls' },
+    h('button', { class: 'btn', onclick: () => { p.stop(); play.textContent = '▶ Lecture'; p.prev(); } }, '◀ Précédent'),
+    play,
+    h('button', { class: 'btn', onclick: () => { p.stop(); play.textContent = '▶ Lecture'; p.next(); } }, 'Suivant ▶'),
+    h('label', { class: 'ctl' }, h('span', {}, 'Vitesse'), sp), ...extra);
+  bar.stopUI = () => { p.stop(); play.textContent = '▶ Lecture'; };
+  return bar;
+}
+// contrôle curseur avec étiquette et valeur
+function slider({ label, min, max, step = 1, value, onInput, fmtv = v => v, width }) {
+  const out = h('b', {}, fmtv(value));
+  const inp = h('input', { type: 'range', min, max, step, value, style: width ? { width } : null });
+  inp.addEventListener('input', () => { out.textContent = fmtv(+inp.value); onInput(+inp.value); });
+  const w = h('label', { class: 'ctl' }, h('span', { class: 'lab' }, h('span', {}, label), out), inp);
+  w.input = inp; w.set = v => { inp.value = v; out.textContent = fmtv(+v); };
+  return w;
+}
+function segmented(options, value, onChange) {
+  const s = h('div', { class: 'seg', role: 'group' });
+  const btns = options.map(([v, l]) => h('button', { class: v === value ? 'on' : '', onclick: () => { btns.forEach(b => b.classList.remove('on')); b2[v].classList.add('on'); onChange(v); } }, l));
+  const b2 = {}; options.forEach(([v], i) => b2[v] = btns[i]);
+  s.append(...btns); s.set = v => { btns.forEach(b => b.classList.remove('on')); b2[v] && b2[v].classList.add('on'); };
+  return s;
+}
+// matrice de cellules ; retourne {el, cells[r][c]}
+function matrix(rows, cols, { cs = 40, gap = 3, cls = '' } = {}) {
+  const el = h('div', { class: 'mat ' + cls, style: { gridTemplateColumns: `repeat(${cols}, var(--cs))`, '--cs': cs + 'px', gap: gap + 'px' } });
+  const cells = [];
+  for (let r = 0; r < rows; r++) { cells.push([]); for (let c = 0; c < cols; c++) { const d = h('div', { class: 'cell' }); el.append(d); cells[r].push(d); } }
+  return { el, cells };
+}
+
+const NI = 6, F = 3, NO = NI - F + 1;
+let mode = 'conv', sel = [1, 1], hoverLock = false;
+$('#mode').append(segmented([['fc', 'Entièrement connectée'], ['local', 'Locale, sans partage'], ['conv', 'Convolution (locale + partage)']], mode, v => { mode = v; draw(); }));
+const R = rng(5);
+const wShared = Array.from({ length: F }, () => Array.from({ length: F }, () => R() * 2 - 1));
+const wLocal = Array.from({ length: NO * NO }, () => Array.from({ length: F }, () => Array.from({ length: F }, () => R() * 2 - 1)));
+const wFC = Array.from({ length: NO * NO }, () => Array.from({ length: NI }, () => Array.from({ length: NI }, () => R() * 2 - 1)));
+function weightOf(o, i, j) { // poids reliant l'entrée (i, j) au neurone o = [r, c] ; null si pas de connexion
+  const [r, c] = o, a = i - r, b = j - c;
+  if (mode === 'fc') return wFC[r * NO + c][i][j];
+  if (a < 0 || b < 0 || a >= F || b >= F) return null;
+  return mode === 'conv' ? wShared[a][b] : wLocal[r * NO + c][a][b];
+}
+function draw() {
+  const cs = 34, g = 4, st = cs + g, ix = 10, iy = 30, ox = 400, oy = 30 + (NI - NO) * st / 2;
+  let s = `<svg viewBox="0 0 ${ox + NO * st + 10} ${iy + NI * st + 10}">`;
+  s += `<text x="${ix}" y="18" font-size="13" font-weight="600" fill="var(--muted)">Entrée ${NI}×${NI}</text><text x="${ox}" y="${oy - 12}" font-size="13" font-weight="600" fill="var(--muted)">Sortie ${NO}×${NO}</text>`;
+  // connexions
+  for (let i = 0; i < NI; i++) for (let j = 0; j < NI; j++) {
+    const w = weightOf(sel, i, j); if (w === null) continue;
+    s += `<line x1="${ix + j * st + cs}" y1="${iy + i * st + cs / 2}" x2="${ox + sel[1] * st}" y2="${oy + sel[0] * st + cs / 2}" stroke="${w < 0 ? 'var(--neg)' : 'var(--pos)'}" stroke-opacity="${.15 + .6 * Math.abs(w)}" stroke-width="${.6 + 2 * Math.abs(w)}"/>`;
+  }
+  for (let i = 0; i < NI; i++) for (let j = 0; j < NI; j++) {
+    const w = weightOf(sel, i, j);
+    s += `<rect x="${ix + j * st}" y="${iy + i * st}" width="${cs}" height="${cs}" rx="6" fill="${w === null ? 'var(--zero)' : divColor(w, 1)}" stroke="${w === null ? 'var(--line)' : 'var(--hl)'}" stroke-width="${w === null ? 1 : 2}"/>`;
+    if (w !== null) s += `<text x="${ix + j * st + cs / 2}" y="${iy + i * st + cs / 2 + 4}" text-anchor="middle" font-size="10" fill="var(--ink)" font-family="IBM Plex Mono, monospace">${fmt(w, 1)}</text>`;
+  }
+  for (let r = 0; r < NO; r++) for (let c = 0; c < NO; c++) {
+    const on = r === sel[0] && c === sel[1];
+    s += `<rect class="o" data-r="${r}" data-c="${c}" x="${ox + c * st}" y="${oy + r * st}" width="${cs}" height="${cs}" rx="17" fill="${on ? 'var(--hl)' : 'var(--accent-soft)'}" stroke="${on ? 'var(--hl)' : 'var(--accent)'}" stroke-width="1.5"/>`;
+  }
+  $('#net').innerHTML = s + '</svg>';
+  $$('#net .o').forEach(e => { const f = () => { sel = [+e.dataset.r, +e.dataset.c]; hoverLock = true; draw(); }; e.addEventListener('mouseenter', f); e.addEventListener('click', f); });
+  const nConn = mode === 'fc' ? NI * NI : F * F;
+  const prm = mode === 'fc' ? (NI * NI + 1) * NO * NO : mode === 'local' ? (F * F + 1) * NO * NO : F * F + 1;
+  $('#desc').innerHTML = {
+    fc: `<b>Entièrement connectée</b> : chaque neurone de sortie est relié aux ${NI * NI} pixels, avec ses propres poids.<br>Le neurone ignore la structure spatiale de l’image.`,
+    local: `<b>Connexions locales, sans partage</b> : chaque neurone ne voit qu’une région ${F}×${F} (son champ récepteur), mais chaque neurone a ses propres poids.`,
+    conv: `<b>Convolution</b> : connexions locales ${F}×${F} <em>et</em> les mêmes ${F * F} poids pour tous les neurones de la carte. Changez de neurone : les poids ne changent pas, seule la région change.`
+  }[mode];
+  $('#toy').innerHTML = `<div class="kpi"><div class="v">${nConn}</div><div class="k">connexions par neurone</div></div><div class="kpi"><div class="v">${prm}</div><div class="k">paramètres de la couche</div></div>`;
+}
+draw();
+// animation douce tant que l'utilisateur n'a pas survolé
+let auto = 0; setInterval(() => { if (hoverLock) return; auto = (auto + 1) % (NO * NO); sel = [Math.floor(auto / NO), auto % NO]; draw(); }, 1300);
+
+// --- compteur de paramètres
+let Q = { N: 32, C: 3, F: 5, K: 5 };
+for (const [k, l, a, b] of [['N', 'Entrée N', 8, 224], ['C', 'Canaux C', 1, 64], ['F', 'Filtre F', 1, 11], ['K', 'Filtres K', 1, 64]])
+  $('#pctl').append(slider({ label: l, min: a, max: b, value: Q[k], onInput: v => { Q[k] = v; pbars(); } }));
+function pbars() {
+  const M = Q.N - Q.F + 1; if (M < 1) { $('#pbars').innerHTML = '<div class="note bad">Le filtre est plus grand que l’entrée.</div>'; return; }
+  const fc = (Q.N * Q.N * Q.C + 1) * M * M * Q.K, loc = (Q.F * Q.F * Q.C + 1) * M * M * Q.K, cv = (Q.F * Q.F * Q.C + 1) * Q.K;
+  const L = v => Math.log10(v) / Math.log10(fc) * 100;
+  const row = (l, v, c, f) => `<div class="barrow"><span>${l}</span><div class="b" style="width:${Math.max(1, L(v))}%;background:${c}"></div><span>${fmtInt(v)}</span></div><div class="small muted mono" style="margin:-4px 0 6px">${f}</div>`;
+  $('#pbars').innerHTML = `<div class="mlabel">SORTIE ${M}×${M}×${Q.K} = ${fmtInt(M * M * Q.K)} NEURONES</div>` +
+    row('Entièrement connectée', fc, 'var(--neg)', `(N·N·C + 1)·M·M·K = (${Q.N}·${Q.N}·${Q.C} + 1)·${M}·${M}·${Q.K}`) +
+    row('Locale, sans partage', loc, 'var(--hl)', `(F·F·C + 1)·M·M·K = (${Q.F}·${Q.F}·${Q.C} + 1)·${M}·${M}·${Q.K}`) +
+    row('Convolution', cv, 'var(--accent)', `(F·F·C + 1)·K = (${Q.F}·${Q.F}·${Q.C} + 1)·${Q.K}`);
+}
+pbars();
+
+// --- grille 3D 28x28x5
+function box(x, y, w, hh, d, fill, stroke, op = 1, ang = -0.65) {
+  const dx = d * Math.cos(ang), dy = d * Math.sin(ang);
+  const P = (pts, f) => `<polygon points="${pts.map(q => q.join(',')).join(' ')}" fill="${f}" fill-opacity="${op}" stroke="${stroke}" stroke-width="1.2"/>`;
+  return { dx, dy, s: P([[x, y], [x + w, y], [x + w + dx, y + dy], [x + dx, y + dy]], fill) + P([[x + w, y], [x + w + dx, y + dy], [x + w + dx, y + hh + dy], [x + w, y + hh]], fill) + P([[x, y], [x + w, y], [x + w, y + hh], [x, y + hh]], fill) };
+}
+let vstep = 0;
+function vol() {
+  const u = 5.5, y0 = 70, x1 = 20, x2 = 330, path = [[3, 3], [3, 12], [3, 21], [12, 21], [12, 12], [12, 3], [21, 3], [21, 12], [21, 21]];
+  const [r, c] = path[vstep % path.length];
+  const inB = box(x1, y0, 32 * u, 32 * u, 3 * 14, 'var(--soft)', 'var(--muted)');
+  const rf = box(x1 + c * u, y0 + r * u, 5 * u, 5 * u, 3 * 14, 'var(--hl)', 'var(--hl)', .35);
+  const outB = box(x2, y0 + 2 * u, 28 * u, 28 * u, 5 * 14, 'var(--soft)', 'var(--muted)');
+  let neurons = '';
+  for (let k = 4; k >= 0; k--) { const b = box(x2 + c * u + k * 14 * Math.cos(-.65), y0 + 2 * u + r * u + k * 14 * Math.sin(-.65), u * 1.4, u * 1.4, 8, 'var(--hl)', 'var(--ink)'); neurons += b.s; }
+  const cx1 = x1 + (c + 2.5) * u + rf.dx, cy1 = y0 + (r + 2.5) * u + rf.dy / 2, cx2 = x2 + c * u, cy2 = y0 + 2 * u + r * u;
+  let lines = ''; for (let k = 0; k < 5; k++) lines += `<line x1="${x1 + (c + 5) * u}" y1="${y0 + (r + 2.5) * u}" x2="${cx2 + k * 14 * Math.cos(-.65)}" y2="${cy2 + k * 14 * Math.sin(-.65) + 3}" stroke="var(--hl)" stroke-opacity=".55" stroke-dasharray="4 3"/>`;
+  $('#vol').innerHTML = `<svg viewBox="0 0 ${x2 + 28 * u + 130} ${y0 + 32 * u + 36}">${inB.s}${rf.s}${outB.s}${lines}${neurons}
+    <text x="${x1 + 16 * u}" y="${y0 + 32 * u + 24}" text-anchor="middle" font-size="13" font-weight="600" fill="var(--ink)">Entrée 32×32×3</text>
+    <text x="${x2 + 14 * u}" y="${y0 + 32 * u + 24}" text-anchor="middle" font-size="13" font-weight="600" fill="var(--ink)">Couche de conv. 28×28×5</text>
+    <text x="${x1 + c * u}" y="${y0 + (r + 5) * u + 14}" font-size="11" font-weight="600" fill="var(--hl)">région 5×5×3</text>
+    <text x="${x2 + 28 * u + outB.dx + 4}" y="${y0 + 2 * u + outB.dy + 4}" font-size="11" fill="var(--muted)">5 filtres</text></svg>`;
+  vstep++;
+}
+vol(); setInterval(vol, 1400);
+</script>
+</body>
+</html>

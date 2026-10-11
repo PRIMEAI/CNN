@@ -102,7 +102,7 @@ kbd{font:12px var(--mono);background:var(--soft);border:1px solid var(--line);bo
 <body>
 <div class="wrap">
 <header class="top">
-  <div class="eyebrow"><span>Réseaux convolutifs · Diapos 7–19</span><a href="index.html">← Toutes les animations</a></div>
+  <div class="eyebrow"><span>Réseaux convolutifs</span><a href="index.html">← Toutes les animations</a></div>
   <h1>Convolution 2D pas à pas</h1>
   <p class="author">Moulay Akhloufi</p>
   <p class="lead">Le masque (filtre) glisse sur l’image d’entrée. À chaque position, on multiplie chaque pixel couvert par le poids correspondant, puis on additionne : cela donne <em>une</em> valeur de la sortie. Les valeurs de l’entrée et du masque sont modifiables.</p>
@@ -238,7 +238,7 @@ const allBtn = h('button', { class: 'btn', onclick: () => { showAll = !showAll; 
 $('#opts').append(
   h('label', { class: 'ctl' }, h('span', {}, 'Filtre'), sel),
   h('label', { class: 'ctl' }, h('span', {}, 'Taille de l’entrée'), sizeSel),
-  h('button', { class: 'btn', onclick: () => { N = 5; M = 3; sizeSel.value = 5; X = SLIDE.map(r => r.slice()); build(); } }, 'Valeurs des diapos'),
+  h('button', { class: 'btn', onclick: () => { N = 5; M = 3; sizeSel.value = 5; X = SLIDE.map(r => r.slice()); build(); } }, 'Exemple du cours'),
   h('button', { class: 'btn', onclick: randomize }, '🎲 Valeurs aléatoires'),
   allBtn);
 function randomize() { const R = rng(Date.now()); X = Array.from({ length: N }, () => Array.from({ length: N }, () => Math.floor(R() * 10))); build(); }

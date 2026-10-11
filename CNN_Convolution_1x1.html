@@ -104,7 +104,7 @@ kbd{font:12px var(--mono);background:var(--soft);border:1px solid var(--line);bo
 <body>
 <div class="wrap">
 <header class="top">
-  <div class="eyebrow"><span>Réseaux convolutifs · Diapos 104–107</span><a href="index.html">← Toutes les animations</a></div>
+  <div class="eyebrow"><span>Réseaux convolutifs</span><a href="index.html">← Toutes les animations</a></div>
   <h1>Convolution 1×1 et « bottleneck »</h1>
   <p class="author">Moulay Akhloufi</p>
   <p class="lead">Un filtre 1×1 ne regarde qu’<strong>un seul pixel</strong>, mais sur <strong>toute la profondeur</strong> : c’est un produit scalaire entre la « colonne » de C valeurs de ce pixel et les C poids du filtre. Avec K filtres, chaque pixel passe d’un vecteur de C valeurs à un vecteur de K valeurs : la taille spatiale ne change pas, seule la profondeur change.</p>
@@ -134,7 +134,7 @@ kbd{font:12px var(--mono);background:var(--soft);border:1px solid var(--line);bo
 
   <section class="card stack">
     <h2>À retenir</h2>
-    <div class="note">Conv. 1×1 avec K filtres sur un volume H×W×C : sortie H×W×K, <span class="mono">(C + 1)·K</span> paramètres. Exemple de la diapo : 56×56×64 → 56×56×32 avec 32 filtres 1×1×64.</div>
+    <div class="note">Conv. 1×1 avec K filtres sur un volume H×W×C : sortie H×W×K, <span class="mono">(C + 1)·K</span> paramètres. Exemple : 56×56×64 → 56×56×32 avec 32 filtres 1×1×64.</div>
     <div class="note">C’est l’équivalent d’une couche entièrement connectée (C → K) appliquée indépendamment à chaque pixel, avec les mêmes poids partout. Suivie d’une ReLU, elle ajoute aussi une non-linéarité.</div>
   </section>
 </div>

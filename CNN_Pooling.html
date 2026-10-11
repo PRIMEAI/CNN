@@ -102,7 +102,7 @@ kbd{font:12px var(--mono);background:var(--soft);border:1px solid var(--line);bo
 <body>
 <div class="wrap">
 <header class="top">
-  <div class="eyebrow"><span>Réseaux convolutifs · Diapos 113–122</span><a href="index.html">← Toutes les animations</a></div>
+  <div class="eyebrow"><span>Réseaux convolutifs</span><a href="index.html">← Toutes les animations</a></div>
   <h1>Pooling : max, moyenne et convolution à pas 2</h1>
   <p class="author">Moulay Akhloufi</p>
   <p class="lead">Le pooling réduit la taille de chaque carte d’activation, <strong>indépendamment</strong> pour chaque carte. Une fenêtre F×F se déplace avec un pas S ; on garde le maximum (max pooling) ou la moyenne (average pooling). Le pooling n’a <strong>aucun paramètre à apprendre</strong>.</p>
@@ -230,7 +230,7 @@ const sF = slider({ label: 'Fenêtre F', min: 2, max: 3, value: 2, onInput: v =>
 const sS = slider({ label: 'Pas S', min: 1, max: 3, value: 2, onInput: v => { A.S = v; buildA(); } });
 $('#optsA').append(sN, sF, sS,
   h('button', { class: 'btn', onclick: () => { XA = randGrid(A.N); buildA(); } }, '🎲 Valeurs aléatoires'),
-  h('button', { class: 'btn', onclick: () => { A = { N: 4, F: 2, S: 2 }; sN.set(4); sF.set(2); sS.set(2); XA = SLIDE.map(r => r.slice()); buildA(); } }, 'Exemple des diapos'));
+  h('button', { class: 'btn', onclick: () => { A = { N: 4, F: 2, S: 2 }; sN.set(4); sF.set(2); sS.set(2); XA = SLIDE.map(r => r.slice()); buildA(); } }, 'Exemple du cours'));
 const pA = new Player({ n: 4, onStep: renderA, speed: 1100 }); const barA = playerBar(pA); $('#barA').append(barA);
 let inA, mxA, avA;
 const win = (X, i, j, F, S) => { const v = []; for (let a = 0; a < F; a++) for (let b = 0; b < F; b++) v.push(X[i * S + a][j * S + b]); return v; };

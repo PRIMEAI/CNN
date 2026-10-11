@@ -107,7 +107,7 @@ kbd{font:12px var(--mono);background:var(--soft);border:1px solid var(--line);bo
 <body>
 <div class="wrap">
 <header class="top">
-  <div class="eyebrow"><span>Réseaux convolutifs · Diapos 20–23</span><a href="index.html">← Toutes les animations</a></div>
+  <div class="eyebrow"><span>Réseaux convolutifs</span><a href="index.html">← Toutes les animations</a></div>
   <h1>Laboratoire de filtres sur une image</h1>
   <p class="author">Moulay Akhloufi</p>
   <p class="lead">Avant l’apprentissage profond, on concevait les filtres à la main : Sobel pour les contours, Gabor pour les textures orientées. Chaque filtre transforme l’image en une <strong>carte de caractéristiques</strong>. Un CNN apprend lui-même des filtres de ce type dans ses premières couches.</p>
@@ -134,7 +134,7 @@ kbd{font:12px var(--mono);background:var(--soft);border:1px solid var(--line);bo
 
   <section class="card stack" id="bankCard">
     <h2>Banc de filtres de Gabor : 4 orientations → 4 cartes</h2>
-    <p class="muted" style="margin:0">Avec plusieurs filtres, l’image devient un empilement de cartes, une par filtre : c’est l’« espace de caractéristiques » (diapo 23). Chaque carte s’allume là où l’image contient des structures de cette orientation. C’est exactement ce que produit une couche de convolution à K filtres.</p>
+    <p class="muted" style="margin:0">Avec plusieurs filtres, l’image devient un empilement de cartes, une par filtre : c’est l’« espace de caractéristiques ». Chaque carte s’allume là où l’image contient des structures de cette orientation. C’est exactement ce que produit une couche de convolution à K filtres.</p>
     <div class="bank" id="bank"></div>
   </section>
 
